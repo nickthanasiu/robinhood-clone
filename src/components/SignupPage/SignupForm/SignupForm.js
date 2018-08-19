@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from '../../../actions';
 
 import './style.scss';
 
 class SignupForm extends Component {
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onSubmit(formProps) {
+    const { signup, reset } = this.props;
+    signup(formProps);
+    reset();
+  }
+
+
   render() {
+    const { handleSubmit } = this.props;
     return (
       <div className="signup-form">
-        <form>
+        <form
+          id="signup-form"
+          onSubmit={handleSubmit(this.onSubmit)}
+        >
           <div className="form-input">
             <Field
             name="firstName"
             type="text"
             component="input"
+            autoComplete="none"
             placeholder="First Name"
             />
           </div>
@@ -21,6 +41,7 @@ class SignupForm extends Component {
             name="lastName"
             type="text"
             component="input"
+            autoComplete="none"
             placeholder="Last Name"
             />
           </div>
@@ -29,6 +50,7 @@ class SignupForm extends Component {
             name="email"
             type="text"
             component="input"
+            autoComplete="none"
             placeholder="E-mail"
             />
           </div>
@@ -37,6 +59,7 @@ class SignupForm extends Component {
             name="password"
             type="password"
             component="input"
+            autoComplete="none"
             placeholder="Password"
             />
           </div>
@@ -50,4 +73,7 @@ class SignupForm extends Component {
   }
 }
 
-export default reduxForm({ form: 'signup' })(SignupForm);
+export default compose(
+  connect(null, actions),
+  reduxForm({ form: 'signup' })
+)(SignupForm);
