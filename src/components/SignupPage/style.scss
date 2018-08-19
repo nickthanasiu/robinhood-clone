@@ -133,6 +133,10 @@
           color: $white;
           cursor: pointer;
         }
+
+        &:focus {
+          outline: none;      
+        }
       }
     }
   }

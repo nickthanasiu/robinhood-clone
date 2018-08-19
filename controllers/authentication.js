@@ -49,7 +49,7 @@ exports.signup = (req, res, next) => {
       }
 
       // Response to request, inficating user was created
-      res.json({ token: 'Here\'s a token, baby'});
+      res.json({ token: tokenForUser(user) });
     });
   });
 };

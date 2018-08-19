@@ -1,0 +1,30 @@
+@import '../../styles/_colors.scss';
+
+.header {
+  height: 4rem;
+  width: 100%;
+  position: fixed;
+  background-color: $white;
+  padding: .25rem;
+  z-index: 1000;
+  box-shadow: 0px 4px 2px -2px $grey;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & a {
+    color: steelblue;
+    font-weight: 300;
+  }
+
+  .header-left {
+    margin-left: 1rem;
+  }
+
+  .header-right {
+    & a {
+      margin-right: 1rem;
+    }
+  }
+}

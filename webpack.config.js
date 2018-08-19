@@ -9,6 +9,7 @@ module.exports = {
   resolve: {
     alias: {
       '@components': path.resolve(process.cwd(), 'src', 'components'),
+      '@styles': path.resolve(process.cwd(), 'src', 'styles'),
     },
   },
   module: {

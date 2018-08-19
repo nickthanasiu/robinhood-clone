@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import App from '@components/App';
+import HomePage from '@components/HomePage';
 import SignupPage from '@components/SignupPage';
 import SigninPage from '@components/SigninPage';
 
@@ -23,8 +24,9 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <App>
-        <Route path="/" exact component={SigninPage} />
-      <Route path="/signup" component={SignupPage} />
+        <Route path="/" exact component={HomePage} />
+        <Route path="/signup" component={SignupPage} />
+        <Route path="/signin" component={SigninPage} />
       </App>
     </BrowserRouter>
   </Provider>,

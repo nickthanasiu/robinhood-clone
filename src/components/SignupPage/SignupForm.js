@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { FaUserPlus } from 'react-icons/fa';
 import * as actions from '../../actions';
 
@@ -14,16 +15,24 @@ class SignupForm extends Component {
       open: false,
     };
     this.onSubmit = this.onSubmit.bind(this);
+    this.redirect = this.redirect.bind(this);
     this.dropDown = this.dropDown.bind(this);
   }
 
   onSubmit(formProps) {
     const { signup, reset } = this.props;
-    signup(formProps);
+    signup(formProps, () => {
+      this.redirect();
+    });
     this.setState({
       open: true
     });
     reset();
+  }
+
+  redirect() {
+    const { history } = this.props;
+    history.push('/');
   }
 
   dropDown() {
@@ -130,5 +139,6 @@ const mapStateToProps = (state) => {
 
 export default compose(
   connect(mapStateToProps, actions),
-  reduxForm({ form: 'signup' })
+  reduxForm({ form: 'signup' }),
+  withRouter
 )(SignupForm);

@@ -9,7 +9,7 @@ const app = express();
 const router = require('./router');
 
 // DB setup
-mongoose.connect('mongodb://localhost:27017/robinhood-clone', {
+mongoose.connect('mongodb://localhost:27017/rhc', {
   useNewUrlParser: true,
 });
 
