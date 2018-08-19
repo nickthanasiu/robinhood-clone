@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { FaUserPlus } from 'react-icons/fa';
+import { withRouter } from 'react-router-dom';
+import { FaIdBadge } from 'react-icons/fa';
 import * as actions from '../../actions';
 
 import './style.scss';
@@ -16,16 +17,24 @@ class SigninForm extends Component {
       open: false
     };
     this.onSubmit = this.onSubmit.bind(this);
+    this.redirect = this.redirect.bind(this);
     this.dropDown = this.dropDown.bind(this);
   }
 
   onSubmit(formProps) {
     const { signin, reset } = this.props;
-    signin(formProps);
     this.setState({
       open: true
     });
+    signin(formProps, () => {
+      this.redirect();
+    });
     reset();
+  }
+
+  redirect() {
+    const { history } = this.props;
+    history.push('/');
   }
 
   dropDown() {
@@ -58,7 +67,7 @@ class SigninForm extends Component {
           </h5>
         </div>
         <div className="signin-icon">
-          <FaUserPlus />
+          <FaIdBadge />
         </div>
         <div className="signin-form">
           <form
@@ -108,5 +117,6 @@ const mapStateToProps = (state) => {
 
 export default compose(
   connect(mapStateToProps, actions),
-  reduxForm({ form: 'signin' })
+  reduxForm({ form: 'signin' }),
+  withRouter
 )(SigninForm);

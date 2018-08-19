@@ -7,7 +7,7 @@ const config = require('../config');
 
 // Create local Strategy
 const localOptions = { usernameField: 'email' };
-const localLogin = newLocalStrategy(localOptions, (email, password, done) => {
+const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
   // Verify this username and password
   // Call done with the user if it's correct username and password
   // otherwise, call done with false
@@ -21,13 +21,15 @@ const localLogin = newLocalStrategy(localOptions, (email, password, done) => {
     }
 
     // Compare passwords -- is password in request equal to user.password
-    user.comparePassword(passwor, (err, isMatch) => {
-      if (err) {
-        return done(err);
+    user.comparePassword(user.password, (error, isMatch) => {
+
+      if (error) {
+        return done(error);
       }
 
       if (!isMatch) {
         return done(null, false);
+        console.log('Password does not MATCH');
       }
 
       return done(null, user);

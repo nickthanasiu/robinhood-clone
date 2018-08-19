@@ -11,5 +11,5 @@ module.exports = (app) => {
   });
 
   app.post('/signup', AuthenticationController.signup);
-  app.post('/signin', requireSignin, Authentication.signin);
+  app.post('/signin', requireSignin, AuthenticationController.signin);
 };

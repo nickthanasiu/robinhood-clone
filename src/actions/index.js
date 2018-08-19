@@ -22,7 +22,7 @@ export const signup = (formProps, callback) => async dispatch => {
   }
 };
 
-export const signin = (formProps) => async dispatch => {
+export const signin = (formProps, callback) => async dispatch => {
   try {
     console.log('YOU ARE SIGNING IN');
     const response = await axios.post('http://localhost:3090/signin', formProps);
@@ -31,6 +31,9 @@ export const signin = (formProps) => async dispatch => {
       type: AUTH_USER,
       payload: response.data.token
     });
+
+    localStorage.setItem('token', response.data.token);
+    callback();
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
@@ -41,7 +44,7 @@ export const signin = (formProps) => async dispatch => {
 
 export const signout = () => {
   console.log('YOU ARE SIGNING OUT!');
-  local.Storage.removeItem('token');
+  localStorage.removeItem('token');
 
   return {
     type: AUTH_USER,

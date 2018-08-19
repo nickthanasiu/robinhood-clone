@@ -11,12 +11,12 @@ export default (ChildComponent) => {
       if (authenticated) {
         return (
           <div className="header-right">
-            <a href="#">
+            <Link to="/account">
               Account
-            </a>
-            <a href="#">
+            </Link>
+            <Link to="/signout">
               Sign Out
-            </a>
+            </Link>
           </div>
         );
       }

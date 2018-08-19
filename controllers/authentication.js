@@ -8,9 +8,11 @@ const tokenForUser = (user) => {
 };
 
 exports.signin = (req, res) => {
+  const user = req.body;
   // User already had their email and password auth'd by passport (in router.js)
   // Here we just need to give them a token
-  res.send({ token: tokenForUser(req.user) });
+  console.log('Successful signin! This will be the token: ', tokenForUser(user));
+  res.send({ token: tokenForUser(user) });
 };
 
 

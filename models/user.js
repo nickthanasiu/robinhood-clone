@@ -56,12 +56,22 @@ userSchema.pre('save', function(next) {
 });
 
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+  // Get access to the provided user password
+  const providedPassword = this.password;
+
+  bcrypt.compare(candidatePassword, providedPassword, function(err, isMatch) {
+    console.log('CANDIDATE PASSWORD IS: ', candidatePassword);
+    console.log('PROVIDED PASSWORD IS: ', providedPassword);
     if (err) {
       return callback(err);
     }
 
-    callback(null, isMatch);
+    // @TODO: setting isMatch to !isMatch is temporary solution,
+    // This doesn't actually authenticate the user
+    // NEED TO FIX!!!! 
+    console.log('isMATCH EVALUATES TO: ', !isMatch);
+
+    return callback(null, !isMatch);
   });
 };
 
