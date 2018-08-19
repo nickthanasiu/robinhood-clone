@@ -28,15 +28,21 @@ class SignupForm extends Component {
           onSubmit={handleSubmit(this.onSubmit)}
         >
           <div className="form-input">
+            <label htmlFor="firstName">
+              First Name
+            </label>
             <Field
-            name="firstName"
-            type="text"
-            component="input"
-            autoComplete="none"
-            placeholder="First Name"
+              name="firstName"
+              type="text"
+              component="input"
+              autoComplete="none"
+              placeholder="First Name"
             />
           </div>
           <div className="form-input">
+            <label htmlFor="lastName">
+              Last Name
+            </label>
             <Field
             name="lastName"
             type="text"
@@ -46,6 +52,9 @@ class SignupForm extends Component {
             />
           </div>
           <div className="form-input">
+            <label htmlFor="email">
+              E-mail
+            </label>
             <Field
             name="email"
             type="text"
@@ -55,6 +64,9 @@ class SignupForm extends Component {
             />
           </div>
           <div className="form-input">
+            <label htmlFor="password">
+              Password
+            </label>
             <Field
             name="password"
             type="password"
