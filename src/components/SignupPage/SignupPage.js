@@ -1,4 +1,5 @@
 import React from 'react';
+import SignupForm from './SignupForm';
 
 const SignupPage = () => (
   <div className="signup-page">
@@ -6,7 +7,7 @@ const SignupPage = () => (
       Sign up
     </h5>
     <div className="signup-form-container">
-      SignupForm appears here
+      <SignupForm />
     </div>
   </div>
 );
