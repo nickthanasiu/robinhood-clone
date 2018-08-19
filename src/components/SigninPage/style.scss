@@ -1,7 +1,7 @@
 @import '../../styles/_breakpoints.scss';
 @import '../../styles/_colors.scss';
 
-.signup-page {
+.signin-page {
   padding: 4rem;
   background-color: rgba(229, 247, 255, 0.25);
 
@@ -72,11 +72,11 @@
     }
   }
 
-  .signup-header {
+  .signin-header {
     margin-bottom: 2rem;
   }
 
-  .signup-form {
+  .signin-form {
     height: 100vh;
     margin-top: 2rem;
 

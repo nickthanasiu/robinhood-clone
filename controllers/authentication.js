@@ -1,5 +1,11 @@
 const jwt = require('jwt-simple');
 const User = require('../models/user');
+const config = require('../config');
+
+const tokenForUser = (user) => {
+  const timestamp = new Date().getTime();
+  return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
+};
 
 
 exports.signup = (req, res, next) => {
@@ -14,7 +20,7 @@ exports.signup = (req, res, next) => {
 
   // Make sure all required fields are included in SignupForm
   if (!firstName || !lastName || !email || !password) {
-    return res.status(422).send({ error: 'Missing required field' });
+    return res.status(422).send({ error: 'Missing required field(s)' });
   }
 
   // See if user with given email exists

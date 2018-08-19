@@ -9,12 +9,29 @@ export const signup = (formProps) => async dispatch => {
     console.log('RESPONSE DATA', response.data);
     dispatch({
       type: AUTH_USER,
-      payload: response.data
+      payload: response.data.token
     });
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
-      payload: 'This email is already in use',
+      payload: 'Missing required field(s) or this e-mail is already in use',
+    });
+  }
+};
+
+export const signin = (formProps) => async dispatch => {
+  try {
+    console.log('YOU ARE SIGNING IN');
+    const response = await axios.post('http://localhost:3090/signin', formProps);
+
+    dispatch({
+      type: AUTH_USER,
+      payload: response.data.token
+    });
+  } catch (err) {
+    dispatch({
+      type: AUTH_ERROR,
+      payload: 'Invalid login credentials'
     });
   }
 };
