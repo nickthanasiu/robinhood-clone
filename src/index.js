@@ -18,7 +18,9 @@ import './styles/main.scss';
 
 const store = createStore(
   reducers,
-  {},
+  {
+    auth: { authenticated: localStorage.getItem('token') }
+  },
   applyMiddleware(thunk)
 );
 
