@@ -7,12 +7,17 @@ import './style.scss';
 class CompanyPage extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      following: false,
+    };
     this.followStock = this.followStock.bind(this);
   }
 
   componentDidMount() {
+    const { selectedCompany, followedCompanies } = this.props;
     console.log(this.props);
   }
+
 
   followStock() {
     const { followCompany, selectedCompany } = this.props;
@@ -22,6 +27,7 @@ class CompanyPage extends Component {
 
   render() {
     const company = this.props.selectedCompany;
+    const { following } = this.state;
     return (
       <div className="company-page">
         <div className="company-header">
@@ -110,7 +116,10 @@ class CompanyPage extends Component {
             type="button"
             onClick={this.followStock}
           >
-            Follow { company.symbol }
+            {
+              following ? 'Unfollow' : 'Follow'
+            }
+            { company.symbol }
           </button>
         </div>
       </div>
@@ -121,6 +130,7 @@ class CompanyPage extends Component {
 const mapStateToProps = (state) => {
   return {
     selectedCompany: state.companies.selectedCompany,
+    followedCompanies: state.companies.followedCompanies,
   };
 }
 

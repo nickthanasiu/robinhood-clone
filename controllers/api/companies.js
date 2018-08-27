@@ -28,6 +28,7 @@ exports.search_companies = (req, res, next) => {
 };
 
 // @TODO: Catch Errors
+// @TODO: A user should not be able to follow a company twice...make it so
 exports.follow_company = (req, res, next) => {
   const { currentUserId, companyId } = req.body;
 
@@ -44,22 +45,34 @@ exports.follow_company = (req, res, next) => {
   res.json(stock);
 };
 
-// @TODO: Catch Errors
-exports.get_followed_companies = (req, res) => {
+exports.get_followed_companies = (req, res, next) => {
   const { currentUserId } = req.body;
 
-  const companies = [];
+  let followedCompanies = [];
 
   FollowedStock.find({ user_id: currentUserId }, (err, stocks) => {
-    console.log('THESE ARE THE STOCKS WE FOUND: ', stocks);
+    if (err) {
+      return next(err);
+    }
 
+    let done = 0;
     // Search Companies for companies matching the returned stocks' company_id's
     stocks.forEach((stock) => {
-      console.log(stock.company_id);
       Company.find({ _id: stock.company_id }, (error, company) => {
-        console.log('FOUND THIS COMPANY: ', company);
+        if (error) {
+          return next(error);
+        }
+
+        followedCompanies = [...followedCompanies, ...company];
+        done += 1;
+        // Once all returned companies have been added to followedCompanies array, send it to client
+        if (done === stocks.length) {
+          console.log('THIS IS THE FOLLOWED COMPANIES ARRAY BEFORE CHECKING FOR DUPLICATES: ', JSON.stringify(followedCompanies, null, 4));
+          // @TODO:
+          // Before sending response, check followedCompanies array for duplicates and remove them
+          res.send(followedCompanies);
+        }
       });
     });
-    console.log('THIS IS THE COMPANIES ARRAY: ', companies);
   });
 };

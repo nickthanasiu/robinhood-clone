@@ -7,12 +7,10 @@ import './style.scss';
 
 const Dashboard = () => (
   <div className="home-page">
-    This is the Dashboard
-
     <MyStocks />
   </div>
 );
 
 const DashWithHeader = Header(Dashboard);
 
-export default requireAuth(DashWithHeader);
+export default DashWithHeader;
