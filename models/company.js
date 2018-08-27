@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
-
-const companySchema = new Schema({
+const companySchema = new mongoose.Schema({
   _id: {
-    type: Schema.ObjectId,
+    type: mongoose.Schema.ObjectId,
     auto: true,
   },
   name: { type: String, required: true },

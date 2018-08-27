@@ -1,79 +1,73 @@
 /*eslint-disable*/
 const mongoose = require('mongoose');
-
-const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
-// Define our model
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   _id: {
-    type: Schema.ObjectId,
+    type: mongoose.Schema.ObjectId,
     auto: true,
   },
   firstName: {
     type: String,
-    lowercase: true,
     required: true,
+    default: '',
   },
   lastName: {
     type: String,
-    lowercase: true,
     required: true,
+    default: '',
   },
   email: {
     type: String,
-    lowercase: true,
     required: true,
+    default: '',
   },
   password: {
     type: String,
-    lowercase: true,
     required: true,
+    default: '',
   },
-}, { timestamps: true });
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-// Before saving User, encrypt password
+// Before saving the model, hash the password String
 userSchema.pre('save', function(next) {
   // Get access to the user model
-  const user = this;
-  // Generate a Salt, then run callback
-  bcrypt.genSalt(10, function(err, salt) {
-    if (err) {
-      return next(error);
+  let user = this;
+
+  console.log('THIS IS THE PASSWORD STRING TO BE HASHED WITHIN THE PRE_SAVE HOOK: ', user.password);
+  // Generate , then run callback
+  bcrypt.genSalt(10, function(saltError, salt) {
+    if (saltError) {
+      return next(saltError);
     }
 
-    // Use the Salt to hash password
-    bcrypt.hash(user.password, salt, null, function(error, hash) {
-      if (error) {
-        return next(error);
+    // Use Salt to Hash the password
+    bcrypt.hash(user.password, salt, null, function(hashError, hash) {
+      if (hashError) {
+        return next(hashError);
       }
 
-      // Overwrite Plain Text password with encrypted(hashed) password
+      // Overwrite Plain Text password with hashed password
       user.password = hash;
+      console.log('THIS IS THE HASHED PASSWORD: ', user.password);
       next();
     });
-  })
+  });
 });
 
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
-  // Get access to the provided user password
-  const providedPassword = this.password;
-
-  bcrypt.compare(candidatePassword, providedPassword, function(err, isMatch) {
-    console.log('CANDIDATE PASSWORD IS: ', candidatePassword);
-    console.log('PROVIDED PASSWORD IS: ', providedPassword);
+  const user = this;
+  bcrypt.compare(candidatePassword, user.password, function(err, isMatch) {
     if (err) {
       return callback(err);
     }
 
-    // @TODO: setting isMatch to !isMatch is temporary solution,
-    // This doesn't actually authenticate the user
-    // NEED TO FIX!!!! 
-    console.log('isMATCH EVALUATES TO: ', !isMatch);
-
-    return callback(null, !isMatch);
+    callback(null, isMatch);
   });
 };
 
-// Export the model
 module.exports = mongoose.model('User', userSchema);

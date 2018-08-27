@@ -1,9 +1,11 @@
+
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
-const User = require('../models/user');
-const config = require('../config');
+const User = require('../models/User');
+const { secret } = require('../config/config');
+
 
 // Create local Strategy
 const localOptions = { usernameField: 'email' };
@@ -21,15 +23,13 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
     }
 
     // Compare passwords -- is password in request equal to user.password
-    user.comparePassword(user.password, (error, isMatch) => {
-
-      if (error) {
-        return done(error);
+    user.comparePassword(password, (err, isMatch) => {
+      if (err) {
+        return done(err);
       }
 
       if (!isMatch) {
         return done(null, false);
-        console.log('Password does not MATCH');
       }
 
       return done(null, user);
@@ -40,7 +40,7 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
 // Setup options for JWT Strategy
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-  secretOrKey: config.secret,
+  secretOrKey: secret,
 };
 
 // Create JWT Strategy

@@ -13,55 +13,27 @@ import './style.scss';
 class SigninForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      open: false
-    };
     this.onSubmit = this.onSubmit.bind(this);
     this.redirect = this.redirect.bind(this);
-    this.dropDown = this.dropDown.bind(this);
   }
 
   onSubmit(formProps) {
     const { signin, reset } = this.props;
-    this.setState({
-      open: true
-    });
-    signin(formProps, () => {
-      this.redirect();
-    });
+    signin(formProps, this.redirect());
     reset();
   }
 
   redirect() {
     const { history } = this.props;
-    history.push('/');
-  }
-
-  dropDown() {
-    const { errorMessage } = this.props;
-    const message = errorMessage.length === 0 ?
-      'Success!' : errorMessage;
-    const backgroundColor = errorMessage.length === 0 ?
-      '#30cd9a' : '#f68f7c';
-    return (
-      <div
-        className="drop-down"
-        style={{ backgroundColor }}
-      >
-        { message }
-      </div>
-    );
+    history.push('/dashboard');
   }
 
   render() {
     const { handleSubmit } = this.props;
-    const { open } = this.state;
     return (
       <div className="signin-page">
-        {
-          open ? this.dropDown() : null
-        }
         <div className="signin-header">
+
           <h5>
             Sign In
           </h5>
@@ -75,9 +47,6 @@ class SigninForm extends Component {
             onSubmit={handleSubmit(this.onSubmit)}
           >
             <div className="form-input">
-              <label htmlFor="email">
-                E-mail
-              </label>
               <Field
                 name="email"
                 type="text"
@@ -87,15 +56,12 @@ class SigninForm extends Component {
               />
             </div>
             <div className="form-input">
-              <label htmlFor="password">
-                Password
-              </label>
               <Field
-              name="password"
-              type="password"
-              component="input"
-              autoComplete="none"
-              placeholder="Password"
+                name="password"
+                type="password"
+                component="input"
+                autoComplete="none"
+                placeholder="Password"
               />
             </div>
 

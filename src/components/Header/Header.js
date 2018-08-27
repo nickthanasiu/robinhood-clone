@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import SearchBar from './SearchBar';
 
 import './style.scss';
 
@@ -42,8 +43,12 @@ export default (ChildComponent) => {
                 Home
               </Link>
             </div>
-
+            <div className="search">
+              <SearchBar />
+            </div>
+            
             { this.renderLinks() }
+
           </div>
           <div className="child-component-content">
             <ChildComponent {...this.props} />

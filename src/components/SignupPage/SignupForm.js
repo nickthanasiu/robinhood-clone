@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
 import { withRouter } from 'react-router-dom';
 import { FaUserPlus } from 'react-icons/fa';
 import * as actions from '../../actions';
@@ -16,14 +16,12 @@ class SignupForm extends Component {
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.redirect = this.redirect.bind(this);
-    this.dropDown = this.dropDown.bind(this);
   }
 
   onSubmit(formProps) {
+    console.log(this.props);
     const { signup, reset } = this.props;
-    signup(formProps, () => {
-      this.redirect();
-    });
+    signup(formProps, this.redirect());
     this.setState({
       open: true
     });
@@ -32,23 +30,7 @@ class SignupForm extends Component {
 
   redirect() {
     const { history } = this.props;
-    history.push('/');
-  }
-
-  dropDown() {
-    const { errorMessage } = this.props;
-    const message = errorMessage.length === 0 ?
-      'Success!' : errorMessage;
-    const backgroundColor = errorMessage.length === 0 ?
-      '#30cd9a' : '#f68f7c';
-    return (
-      <div
-        className="drop-down"
-        style={{ backgroundColor }}
-      >
-        { message }
-      </div>
-    );
+    history.push('/dashboard');
   }
 
   render() {
@@ -56,9 +38,6 @@ class SignupForm extends Component {
     const { open } = this.state;
     return (
       <div className="signup-page">
-        {
-          open ? this.dropDown() : null
-        }
         <div className="signup-header">
           <h5>
             Sign Up
@@ -80,44 +59,43 @@ class SignupForm extends Component {
                 name="firstName"
                 type="text"
                 component="input"
-                autoComplete="none"
                 placeholder="First Name"
               />
             </div>
+
             <div className="form-input">
               <label htmlFor="lastName">
                 Last Name
               </label>
               <Field
-              name="lastName"
-              type="text"
-              component="input"
-              autoComplete="none"
-              placeholder="Last Name"
+                name="lastName"
+                type="text"
+                component="input"
+                placeholder="Last Name"
               />
             </div>
+
             <div className="form-input">
               <label htmlFor="email">
                 E-mail
               </label>
               <Field
-              name="email"
-              type="text"
-              component="input"
-              autoComplete="none"
-              placeholder="E-mail"
+                name="email"
+                type="text"
+                component="input"
+                placeholder="E-mail"
               />
             </div>
+
             <div className="form-input">
-              <label htmlFor="password">
+              <label htmlFor="firstName">
                 Password
               </label>
               <Field
-              name="password"
-              type="password"
-              component="input"
-              autoComplete="none"
-              placeholder="Password"
+                name="password"
+                type="password"
+                component="input"
+                placeholder="Password"
               />
             </div>
 

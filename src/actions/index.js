@@ -2,10 +2,11 @@
 import axios from 'axios';
 import { AUTH_USER, AUTH_ERROR } from './types';
 
+const API_URL = 'http://localhost:3090';
+
 export const signup = (formProps, callback) => async dispatch => {
   try {
-    console.log('SIGNING UP USER: ', formProps);
-    const response = await axios.post('http://localhost:3090/signup', formProps);
+    const response = await axios.post(`${API_URL}/signup`, formProps);
     console.log('RESPONSE DATA', response.data);
     dispatch({
       type: AUTH_USER,
@@ -24,27 +25,28 @@ export const signup = (formProps, callback) => async dispatch => {
 
 export const signin = (formProps, callback) => async dispatch => {
   try {
-    console.log('YOU ARE SIGNING IN');
-    const response = await axios.post('http://localhost:3090/signin', formProps);
-
+    const response = await axios.post(`${API_URL}/signin`, formProps);
     dispatch({
       type: AUTH_USER,
-      payload: response.data.token
+      payload: response.data.token,
     });
 
     localStorage.setItem('token', response.data.token);
+    localStorage.setItem('currentUserId', response.data.currentUserId);
     callback();
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
-      payload: 'Invalid login credentials'
+      payload: 'Invalid login credentials',
     });
   }
 };
 
+
+
 export const signout = () => {
-  console.log('YOU ARE SIGNING OUT!');
   localStorage.removeItem('token');
+  localStorage.removeItem('currentUserId');
 
   return {
     type: AUTH_USER,

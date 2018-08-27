@@ -1,62 +1,68 @@
 const jwt = require('jwt-simple');
-const User = require('../models/user');
-const config = require('../config');
+const { secret } = require('../config/config');
+const User = require('../models/User');
+const UserSession = require('../models/UserSession');
 
-const tokenForUser = (user) => {
+function tokenForUser(user) {
   const timestamp = new Date().getTime();
-  return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
-};
+  return jwt.encode({ sub: user.id, iat: timestamp }, secret);
+}
 
 exports.signin = (req, res) => {
-  const user = req.body;
-  // User already had their email and password auth'd by passport (in router.js)
-  // Here we just need to give them a token
-  console.log('Successful signin! This will be the token: ', tokenForUser(user));
-  res.send({ token: tokenForUser(user) });
+  const { user } = req;
+  res.send({
+    token: tokenForUser(user),
+    currentUserId: user._id,
+  });
 };
-
 
 exports.signup = (req, res, next) => {
   const {
     firstName,
     lastName,
     email,
-    password,
+    password
   } = req.body;
 
-  console.log('REQ BODY: ', req.body);
+  let signupError = '';
 
-  // Make sure all required fields are included in SignupForm
+  // Make sure all required fields are included in signup
   if (!firstName || !lastName || !email || !password) {
-    return res.status(422).send({ error: 'Missing required field(s)' });
+    console.log('HERE IS REQ.BODY WITHIN MISSING FIELD ERROR: ', req.body);
+    signupError = 'Missing required field(s)';
+    return res.status(422).send({ error: `${signupError}` });
   }
 
-  // See if user with given email exists
+  // Check if user with given email exists
   User.findOne({ email }, (err, existingUser) => {
     if (err) {
       return next(err);
     }
 
-    // If a user with submitted email already does exist, return an error
+    // If a user with provided email already exists, return error
     if (existingUser) {
-      return res.status(422).send({ error: 'Email is already in use' });
+      signupError = 'Provided email is already in use';
+      return res.status(422).send({ error: `${signupError}` });
     }
 
-    // If a user with submitted email does NOT exist, create and save user record
+    // If a user with provided email does NOT exist,
+    // create and save user record
+
+    // Create user
     const user = new User({
       firstName,
       lastName,
       email,
-      password,
+      password
     });
 
     // Save user
-    user.save((saveError) => {
-      if (saveError) {
-        return next(saveError);
+    user.save((error) => {
+      if (error) {
+        return next(error);
       }
 
-      // Response to request, inficating user was created
+      // Respond to request by sending user a token
       res.json({ token: tokenForUser(user) });
     });
   });
