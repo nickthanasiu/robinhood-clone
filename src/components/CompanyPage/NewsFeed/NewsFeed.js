@@ -16,7 +16,7 @@ class NewsFeed extends Component {
   componentDidMount() {
     const { fetchArticles, company } = this.props;
     // const query = company.name.toLowerCase();
-    fetchArticles('amazon');
+    fetchArticles(company.name);
   }
 
   componentDidUpdate() {
@@ -36,29 +36,31 @@ class NewsFeed extends Component {
           {
             articles.map((article) => {
               return (
-                <li className="article">
-                  <div className="article-left">
-                    <img src={article.urlToImage} />
-                  </div>
-                  <div className="article-right">
-                    <span className="article-source">
-                      { article.source.name }
-                    </span>
-                    <span className="article-published">
-                      <Moment fromNow>
-                         { article.publishedAt }
-                      </Moment>
-                    </span>
+                <a href={article.url} rel="noopener noreferrer" target="_blank">
+                  <li className="article">
+                    <div className="article-left">
+                      <img src={article.urlToImage} />
+                    </div>
+                    <div className="article-right">
+                      <span className="article-source">
+                        { article.source.name }
+                      </span>
+                      <span className="article-published">
+                        <Moment fromNow>
+                           { article.publishedAt }
+                        </Moment>
+                      </span>
 
-                    <h5 className="article-headline">
-                      { article.title }
-                    </h5>
+                      <h5 className="article-headline">
+                        { article.title }
+                      </h5>
 
-                    <p className="article-preview">
-                      { article.description }
-                    </p>
-                  </div>
-                </li>
+                      <p className="article-preview">
+                        { article.description }
+                      </p>
+                    </div>
+                  </li>
+                </a>
               );
             })
           }

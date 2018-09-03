@@ -12,8 +12,8 @@ export default (ChildComponent) => {
       if (authenticated) {
         return (
           <div className="header-right">
-            <Link to="/">
-              Home
+            <Link to="/dashboard">
+              Dashboard
             </Link>
             <Link to="/account">
               Account

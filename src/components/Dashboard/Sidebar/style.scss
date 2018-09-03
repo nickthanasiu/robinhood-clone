@@ -1,0 +1,23 @@
+@import '../../../styles/_colors.scss';
+
+.sidebar {
+  width: 22%;
+  min-height: 55vh;
+  font-size: .875rem;
+
+  .watchlist {
+    font-weight: 500;
+    box-shadow:
+      0 0 4px 1px rgba(0,0,0,.01),
+      0 3px 24px rgba(48,51,51,.09);
+
+    .watchlist-header {
+      padding: 1rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+
+      border-bottom: 1px solid $grey;
+
+    }
+  }
+}

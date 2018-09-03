@@ -9,8 +9,6 @@ const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI(NEWS_API_KEY);
 
 exports.newsFeed = (req, res, next) => {
-
-  console.log('HERE IS THE REQUEST BODY: ', req.body);
   const { query } = req.body;
 
   // News API Request using their Node.js client library
