@@ -1,8 +1,8 @@
 @import '../../../styles/_colors.scss';
 
-.my-stocks {
+.following {
 
-  .my-stocks-list {
+  .following-list {
     padding: .5rem;
     margin-top: 1rem;
 
@@ -10,7 +10,7 @@
     flex-wrap: wrap;
     justify-content: center;
 
-    .my-stocks-list-item {
+    .following-list-item {
         flex: 1 0 20%;
 
         display: flex;

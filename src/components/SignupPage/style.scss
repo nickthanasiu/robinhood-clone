@@ -3,7 +3,6 @@
 
 .signup-page {
   padding: 4rem;
-  background-color: rgba(229, 247, 255, 0.25);
 
   display: flex;
   flex-direction: column;
@@ -105,7 +104,13 @@
           border: 1px solid $grey;
           border-radius: 5px;
 
-          &:focus {
+          &:hover {
+            border: 1px solid $darkergrey;
+          }
+
+          &:focus,
+          &:active {
+            border: 1px solid $green;
             outline: none;
             box-shadow:
               0 0 4px 1px rgba(0,0,0,.01),
@@ -122,20 +127,20 @@
         margin-top: 1rem;
         height: 2.5rem;
         width: 50vw;
-        border: 1px solid $blue;
+        border: 1px solid $green;
         border-radius: 5px;
         background-color: $white;
-        color: $blue;
+        color: $green;
 
         &:hover {
-          border: 1px solid $blue;
-          background-color: $blue;
+          border: 1px solid $green;
+          background-color: $green;
           color: $white;
           cursor: pointer;
         }
 
         &:focus {
-          outline: none;      
+          outline: none;
         }
       }
     }

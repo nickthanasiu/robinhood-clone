@@ -12,6 +12,9 @@ export default (ChildComponent) => {
       if (authenticated) {
         return (
           <div className="header-right">
+            <Link to="/">
+              Home
+            </Link>
             <Link to="/account">
               Account
             </Link>
@@ -24,6 +27,9 @@ export default (ChildComponent) => {
 
       return (
         <div className="header-right">
+          <Link to="/">
+            Home
+          </Link>
           <Link to="/signup">
             Sign Up
           </Link>
@@ -39,14 +45,15 @@ export default (ChildComponent) => {
         <div className="composed-component">
           <div className="header">
             <div className="header-left">
-              <Link to="/">
-                Home
-              </Link>
+              <div className="brand">
+                Brand
+              </div>
+              <div className="search">
+                <SearchBar />
+              </div>
             </div>
-            <div className="search">
-              <SearchBar />
-            </div>
-            
+
+
             { this.renderLinks() }
 
           </div>

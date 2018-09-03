@@ -1,52 +1,24 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../../actions/companies';
-import LoadingSpinner from '../../LoadingSpinner';
+import React from 'react';
 
 import './style.scss';
 
-class MyStocks extends Component {
+const MyStocks = () => (
+  <div className="my-stocks">
+    <h6>
+      My Stocks
+    </h6>
+    <ul className="my-stocks-list">
+      <li className="my-stocks-list-item">
+        <span className="stock-name">
+          Twitter
+        </span>
 
-  componentDidMount() {
-    const { getFollowedCompanies } = this.props;
-    const currentUserId = localStorage.getItem('currentUserId');
-    getFollowedCompanies(currentUserId);
-  }
+        <span className="stock-price">
+          $72.43
+        </span>
+      </li>
+    </ul>
+  </div>
+);
 
-  render() {
-    const { fetchingCompanies, followedCompanies } = this.props;
-    return (
-      <div className="my-stocks">
-        <h3>
-          My Stocks
-        </h3>
-        <ul className="stocks-list">
-          {
-            fetchingCompanies ? <LoadingSpinner /> :
-              followedCompanies.map(company => (
-                <li className="stocks-list-item">
-                  <span className="stock-name">
-                    { company.name }
-                  </span>
-
-                  <span className="stock-price">
-                    ${ company.price }
-                  </span>
-                </li>
-              ))
-          }
-        </ul>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    fetchingCompanies: state.companies.fetchingCompanies,
-    followedCompanies: state.companies.followedCompanies,
-  };
-};
-
-
-export default connect(mapStateToProps, actions)(MyStocks);
+export default MyStocks;

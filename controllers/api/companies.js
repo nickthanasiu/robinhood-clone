@@ -27,6 +27,17 @@ exports.search_companies = (req, res, next) => {
   });
 };
 
+exports.get_companies = (req, res, next) => {
+  Company.find({}, (err, companies) => {
+    if (err) {
+      return next(err);
+    }
+
+    // Respond with array of companies
+    res.json(companies);
+  });
+};
+
 // @TODO: Catch Errors
 // @TODO: A user should not be able to follow a company twice...make it so
 exports.follow_company = (req, res, next) => {
@@ -43,6 +54,17 @@ exports.follow_company = (req, res, next) => {
   stock.save();
 
   res.json(stock);
+};
+
+exports.unfollow_company = (req, res, next) => {
+  const { currentUserId, companyId } = req.body;
+
+  // Find FollowedStock Item to delete
+  FollowedStock.deleteOne({ user_id: currentUserId, company_id: companyId }, (err) => {
+    if (err) {
+      return next(err);
+    }
+  });
 };
 
 exports.get_followed_companies = (req, res, next) => {

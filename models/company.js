@@ -7,6 +7,7 @@ const companySchema = new mongoose.Schema({
   },
   name: { type: String, required: true },
   symbol: { type: String, required: true },
+  description: { type: String, required: true },
   price: { type: Number, required: true },
   hq: { type: String, required: true },
   founded: { type: String, required: true },
