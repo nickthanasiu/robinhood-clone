@@ -1,11 +1,11 @@
 @import '../../../styles/_colors.scss';
 
-.sidebar {
+.sidebar-container {
   width: 22%;
   min-height: 55vh;
   font-size: .875rem;
 
-  .watchlist {
+  .sidebar {
     font-weight: 500;
     box-shadow:
       0 0 4px 1px rgba(0,0,0,.01),
@@ -18,6 +18,21 @@
 
       border-bottom: 1px solid $grey;
 
+    }
+
+    .watchlist {
+      .watchlist-item {
+        border-bottom: 1px solid $grey;
+        padding: 1rem 1.5rem;
+
+        display: flex;
+        justify-content: space-between;
+
+        &:hover {
+          background-color: $lightgrey;
+          cursor: pointer;
+        }
+      }
     }
   }
 }

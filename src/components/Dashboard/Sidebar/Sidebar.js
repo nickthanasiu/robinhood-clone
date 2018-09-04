@@ -13,21 +13,44 @@ class Sidebar extends Component {
 
   componentDidMount() {
     console.log('SIDEBAR PROPS: ', this.props);
+    const { getFollowedCompanies } = this.props;
+    getFollowedCompanies(this.currentUserId);
   }
 
   render() {
+    const { followedCompanies } = this.props;
     return (
-      <div className="sidebar">
+      <div className="sidebar-container">
 
-        <div className="watchlist">
+        <div className="sidebar">
           <div className="watchlist-header">
             Watchlist
           </div>
-
+          <ul className="watchlist">
+            {
+              followedCompanies.map(company => (
+                <li className="watchlist-item">
+                  <span className="company-symbol">
+                    { company.symbol }
+                  </span>
+                  <span className="company-price">
+                    $
+                    { company.price }
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
         </div>
       </div>
     );
   }
 }
 
-export default connect(null, actions)(Sidebar);
+const mapStateToProps = (state) => {
+  return {
+    followedCompanies: state.companies.followedCompanies,
+  };
+};
+
+export default connect(mapStateToProps, actions)(Sidebar);

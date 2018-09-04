@@ -42,7 +42,7 @@ export const signin = (formProps, callback) => async dispatch => {
   }
 };
 
-
+// @TODO: Add action to reset authentication errorMessage on signout
 
 export const signout = () => {
   localStorage.removeItem('token');

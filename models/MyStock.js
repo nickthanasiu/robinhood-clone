@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const FollowedStockSchema = new mongoose.Schema({
+const MyStockSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.ObjectId,
     auto: true,
@@ -13,6 +13,12 @@ const FollowedStockSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Company',
   },
+  price: {
+    type: Number,
+  },
+  num_shares: {
+    type: Number,
+  },
 }, { timestamps: true });
 
-module.exports = mongoose.model('FollowedStock', FollowedStockSchema);
+module.exports = mongoose.model('MyStock', MyStockSchema);

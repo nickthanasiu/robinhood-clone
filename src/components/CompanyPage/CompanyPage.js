@@ -30,15 +30,15 @@ class CompanyPage extends Component {
     }).indexOf(selectedCompany._id);
     if (index !== -1) {
       this.setState({
-        following: true,
+        watching: true,
       });
     }
   }
 
   handleButtonClick() {
     // if following, unfollow, otherwise follow
-    const { following } = this.state;
-    if (!following) {
+    const { watching } = this.state;
+    if (!watching) {
       this.followStock();
     } else {
       this.unfollowStock()
@@ -49,7 +49,7 @@ class CompanyPage extends Component {
     const { followCompany, selectedCompany } = this.props;
     followCompany(this.currentUserId, selectedCompany._id);
     this.setState({
-      following: true
+      watching: true
     });
   }
 
@@ -57,13 +57,13 @@ class CompanyPage extends Component {
     const { unfollowCompany, selectedCompany } = this.props;
     unfollowCompany(this.currentUserId, selectedCompany._id);
     this.setState({
-      following: false
+      watching: false
     });
   }
 
   render() {
     const { selectedCompany } = this.props;
-    const { following } = this.state;
+    const { watching } = this.state;
     return (
       <div className="company-page">
         <div className="column-left">
@@ -72,6 +72,7 @@ class CompanyPage extends Component {
               { selectedCompany.name }
             </h2>
             <h2 className="company-price">
+              $
               { selectedCompany.price }
             </h2>
 
@@ -187,6 +188,8 @@ class CompanyPage extends Component {
           <div className="sidebar-container">
             <SideBar
               company={selectedCompany}
+              watching={watching}
+              handleButtonClick={this.handleButtonClick}
             />
           </div>
         </div>

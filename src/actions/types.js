@@ -16,3 +16,11 @@ export const FETCH_FOLLOWED_COMPANIES_ERROR = 'fetch_followed_companies_error';
 export const FETCH_ARTICLES_BEGIN = 'fetch_articles_begin';
 export const FETCH_ARTICLES_SUCCESS = 'fetch_articles_success';
 export const FETCH_ARTICLES_ERROR = 'fetch_articles_error';
+
+export const GET_INTRADAY_BEGIN = 'get_intraday_begin';
+export const GET_INTRADAY_SUCCESS = 'get_intraday_success';
+export const GET_INTRADAY_ERROR = 'get_intraday_error';
+
+export const GET_DAILY_BEGIN = 'get_daily_begin';
+export const GET_DAILY_SUCCESS = 'get_daily_success';
+export const GET_DAILY_ERROR = 'get_daily_error';

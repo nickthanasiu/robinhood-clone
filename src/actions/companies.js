@@ -47,7 +47,7 @@ const getCompaniesSuccess = companies => ({
   payload: { companies },
 });
 
-const getCompaniesError = () => ({
+const getCompaniesError = error => ({
   type: FETCH_COMPANIES_ERROR,
   payload: { error },
 });
