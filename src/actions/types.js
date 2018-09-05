@@ -13,6 +13,10 @@ export const FETCH_FOLLOWED_COMPANIES_BEGIN = 'fetch_followed_companies_begin';
 export const FETCH_FOLLOWED_COMPANIES_SUCCESS = 'fetch_followed_companies_success';
 export const FETCH_FOLLOWED_COMPANIES_ERROR = 'fetch_followed_companies_error';
 
+export const FETCH_STOCKS_BEGIN = 'fetch_stocks_begin';
+export const FETCH_STOCKS_SUCCESS = 'fetch_stocks_success';
+export const FETCH_STOCKS_ERROR = 'fetch_stocks_error';
+
 export const FETCH_ARTICLES_BEGIN = 'fetch_articles_begin';
 export const FETCH_ARTICLES_SUCCESS = 'fetch_articles_success';
 export const FETCH_ARTICLES_ERROR = 'fetch_articles_error';
@@ -20,6 +24,10 @@ export const FETCH_ARTICLES_ERROR = 'fetch_articles_error';
 export const GET_INTRADAY_BEGIN = 'get_intraday_begin';
 export const GET_INTRADAY_SUCCESS = 'get_intraday_success';
 export const GET_INTRADAY_ERROR = 'get_intraday_error';
+
+export const GET_CURRENT_BEGIN = 'get_current_begin';
+export const GET_CURRENT_SUCCESS = 'get_current_success';
+export const GET_CURRENT_ERROR = 'get_current_error';
 
 export const GET_DAILY_BEGIN = 'get_daily_begin';
 export const GET_DAILY_SUCCESS = 'get_daily_success';

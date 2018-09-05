@@ -16,5 +16,9 @@ exports.intraday_data = async (req, res) => {
 };
 
 exports.daily_data = async (req, res) => {
-
+  const { query } = req.body;
+  const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_DAILY&symbol=${query}&apikey=${API_KEY}`);
+  const responseData = Object.values(response.data)[1];
+  console.log(responseData);
+  res.json(responseData);
 };

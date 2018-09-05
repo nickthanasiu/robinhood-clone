@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MyStockSchema = new mongoose.Schema({
+const StockSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.ObjectId,
     auto: true,
@@ -21,4 +21,4 @@ const MyStockSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-module.exports = mongoose.model('MyStock', MyStockSchema);
+module.exports = mongoose.model('Stock', StockSchema);

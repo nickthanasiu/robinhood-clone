@@ -13,12 +13,13 @@ class Sidebar extends Component {
 
   componentDidMount() {
     console.log('SIDEBAR PROPS: ', this.props);
-    const { getFollowedCompanies } = this.props;
+    const { getFollowedCompanies, getMyStocks } = this.props;
     getFollowedCompanies(this.currentUserId);
+    getMyStocks(this.currentUserId);
   }
 
   render() {
-    const { followedCompanies } = this.props;
+    const { followedCompanies, myStocks } = this.props;
     return (
       <div className="sidebar-container">
 
@@ -41,6 +42,24 @@ class Sidebar extends Component {
               ))
             }
           </ul>
+          <div className="stocks-list-header">
+            Stocks
+          </div>
+          <ul className="stocks-list">
+            {
+              myStocks.map(stock => (
+                <li className="stocks-list-item">
+                  <span className="company-symbol">
+                    { stock.symbol }
+                  </span>
+                  <span className="company-price">
+                    $
+                    { stock.price }
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
         </div>
       </div>
     );
@@ -50,6 +69,7 @@ class Sidebar extends Component {
 const mapStateToProps = (state) => {
   return {
     followedCompanies: state.companies.followedCompanies,
+    myStocks: state.stocks.myStocks,
   };
 };
 
