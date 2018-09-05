@@ -2,12 +2,16 @@ import {
   FETCH_STOCKS_BEGIN,
   FETCH_STOCKS_SUCCESS,
   FETCH_STOCKS_ERROR,
+  BUY_STOCK_BEGIN,
+  BUY_STOCK_SUCCESS,
+  BUY_STOCK_ERROR,
 } from '../actions/types';
 
 const initialState = {
   myStocks: [],
-  loadingStocks: false,
-  stocksError: '',
+  loadingMyStocks: false,
+  myStocksError: '',
+  buyStockError: '',
 };
 
 export default (state = initialState, action) => {
@@ -15,21 +19,26 @@ export default (state = initialState, action) => {
     case FETCH_STOCKS_BEGIN:
       return {
         ...state,
-        loadingStocks: true,
-        stocksError: '',
+        loadingMyStocks: true,
+        myStocksError: '',
       };
     case FETCH_STOCKS_SUCCESS:
       return {
         ...state,
-        loadingStocks: false,
+        loadingMyStocks: false,
         myStocks: action.payload.stocks,
       };
     case FETCH_STOCKS_ERROR:
       return {
         ...state,
-        loadingStocks: false,
-        stocksError: action.payload.error,
+        loadingMyStocks: false,
+        myStocksError: action.payload.error,
         myStocks: [],
+      };
+    case BUY_STOCK_ERROR:
+      return {
+        ...state,
+        buyStockError: action.payload.error,
       };
     default:
       return state;

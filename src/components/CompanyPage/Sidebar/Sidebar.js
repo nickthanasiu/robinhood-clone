@@ -3,7 +3,7 @@ import React from 'react';
 import './style.scss';
 
 const Sidebar = (props) => {
-  const { watching, company, handleButtonClick } = props;
+  const { watching, company, handleButtonClick, handleBuyStock } = props;
   return (
     <div className="sidebar">
 
@@ -41,7 +41,7 @@ const Sidebar = (props) => {
           </div>
 
           <div className="buy-button-container">
-            <button type="submit">
+            <button type="submit" onClick={handleBuyStock}>
               Buy
             </button>
           </div>

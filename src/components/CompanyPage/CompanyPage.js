@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/companies';
 import Header from '../Header';
 import Chart from './Chart';
 import NewsFeed from './NewsFeed';
 import SideBar from './Sidebar';
+import { followCompany, unfollowCompany } from '../../actions/companies';
+import { buyStock } from '../../actions/stocks';
 
 import './style.scss';
 
@@ -19,12 +20,14 @@ class CompanyPage extends Component {
     this.currentUserId = localStorage.getItem('currentUserId');
 
     this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.handleBuyStock = this.handleBuyStock.bind(this);
     this.followStock = this.followStock.bind(this);
     this.unfollowStock = this.unfollowStock.bind(this);
   }
 
   componentDidMount() {
     const { selectedCompany, followedCompanies } = this.props;
+    console.log('COMPANYPAGE PROPS: ', this.props);
     const index = followedCompanies.map((company) => {
       return company._id;
     }).indexOf(selectedCompany._id);
@@ -43,6 +46,12 @@ class CompanyPage extends Component {
     } else {
       this.unfollowStock()
     }
+  }
+
+  handleBuyStock() {
+    const { buyStock, selectedCompany } = this.props;
+    const shares = 1;
+    buyStock(this.currentUserId, selectedCompany._id, selectedCompany.price, shares);
   }
 
   followStock() {
@@ -190,6 +199,7 @@ class CompanyPage extends Component {
               company={selectedCompany}
               watching={watching}
               handleButtonClick={this.handleButtonClick}
+              handleBuyStock={this.handleBuyStock}
             />
           </div>
         </div>
@@ -203,11 +213,17 @@ const mapStateToProps = (state) => {
     selectedCompany: state.companies.selectedCompany,
     followedCompanies: state.companies.followedCompanies,
   };
-}
+};
+
+const mapDispatchToProps = dispatch => ({
+  followCompany: (currentUserId, companyId) => dispatch(followCompany(currentUserId, companyId)),
+  unfollowCompany: (currentUserId, companyId) => dispatch(unfollowCompany(currentUserId, companyId)),
+  buyStock: (currentUserId, companyId, companyPrice, shares) => dispatch(buyStock(currentUserId, companyId, companyPrice, shares)),
+});
 
 const CompanyPageWithHeader = Header(CompanyPage);
 
 export default connect(
   mapStateToProps,
-  actions
+  mapDispatchToProps
 )(CompanyPageWithHeader);
