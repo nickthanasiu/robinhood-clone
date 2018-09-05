@@ -57,8 +57,8 @@ export const getCompanies = () => async dispatch => {
     dispatch(getCompaniesBegin());
 
     const response = await axios.get(`${API_URL}/get_companies`);
-    console.log('FETCHED COMPANIES: ', response.data);
     dispatch(getCompaniesSuccess(response.data));
+    
   } catch (err) {
     console.log('CAUGHT ERROR: ', err);
     dispatch(getCompaniesError(err));

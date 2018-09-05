@@ -34,5 +34,28 @@
         }
       }
     }
+
+    .stocks-list-header {
+      padding: 1rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+
+      border-bottom: 1px solid $grey;
+    }
+
+    .stocks-list {
+      .stocks-list-item {
+        border-bottom: 1px solid $grey;
+        padding: 1rem 1.5rem;
+
+        display: flex;
+        justify-content: space-between;
+
+        &:hover {
+          background-color: $lightgrey;
+          cursor: pointer;
+        }
+      }
+    }
   }
 }

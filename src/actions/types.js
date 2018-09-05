@@ -17,6 +17,10 @@ export const FETCH_STOCKS_BEGIN = 'fetch_stocks_begin';
 export const FETCH_STOCKS_SUCCESS = 'fetch_stocks_success';
 export const FETCH_STOCKS_ERROR = 'fetch_stocks_error';
 
+export const BUY_STOCK_BEGIN = 'buy_stock_begin';
+export const BUY_STOCK_SUCCESS = 'buy_stock_success';
+export const BUY_STOCK_ERROR = 'buy_stock_error';
+
 export const FETCH_ARTICLES_BEGIN = 'fetch_articles_begin';
 export const FETCH_ARTICLES_SUCCESS = 'fetch_articles_success';
 export const FETCH_ARTICLES_ERROR = 'fetch_articles_error';

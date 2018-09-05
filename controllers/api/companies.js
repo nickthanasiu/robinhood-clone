@@ -86,10 +86,10 @@ exports.get_followed_companies = (req, res, next) => {
         }
 
         followedCompanies = [...followedCompanies, ...company];
-        done += 1;
+        done++;
         // Once all returned companies have been added to followedCompanies array, send it to client
         if (done === stocks.length) {
-          console.log('THIS IS THE FOLLOWED COMPANIES ARRAY BEFORE CHECKING FOR DUPLICATES: ', JSON.stringify(followedCompanies, null, 4));
+
           // @TODO:
           // Before sending response, check followedCompanies array for duplicates and remove them
           res.send(followedCompanies);

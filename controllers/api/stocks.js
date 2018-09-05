@@ -1,4 +1,5 @@
 const Stock = require('../../models/Stock');
+const Company = require('../../models/Company');
 
 exports.buy_stock = (req, res) => {
   const {
@@ -30,7 +31,33 @@ exports.buy_stock = (req, res) => {
   res.json(stock);
 };
 
-exports.get_stocks = (req, res) => {
+
+// @TODO: Add logic to update Company price before retrieving stocks
+exports.get_stocks = (req, res, next) => {
   const { currentUserId } = req.body;
-  console.log('GET_STOCKS REQ.BODY: ', req.body);
+
+  let myStocks = [];
+
+  Stock.find({ user_id: currentUserId }, (err, stocks) => {
+    if (err) {
+      return next(err);
+    }
+
+    let done = 0;
+    // Search Companies for companies matching the returned stocks' company_id's
+    stocks.forEach((stock) => {
+      Company.find({ _id: stock.company_id}, (error, company) => {
+        if (error) {
+          return next(error);
+        }
+
+        myStocks = [...myStocks, ...company];
+        done++;
+        // Once all returned companies have been added to myStocks array, send it to client
+        if (done === stocks.length) {
+          res.json(myStocks);
+        }
+      });
+    });
+  });
 };

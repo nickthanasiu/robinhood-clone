@@ -5,6 +5,9 @@ import {
   FETCH_STOCKS_BEGIN,
   FETCH_STOCKS_SUCCESS,
   FETCH_STOCKS_ERROR,
+  BUY_STOCK_BEGIN,
+  BUY_STOCK_SUCCESS,
+  BUY_STOCK_ERROR,
 } from './types';
 
 const API_URL = 'http://localhost:3090/api';
@@ -28,9 +31,13 @@ export const getMyStocks = currentUserId => async dispatch => {
     dispatch(fetchStocksBegin());
 
     const response = await axios.post(`${API_URL}/get_stocks`, { currentUserId });
-    // const stocks = response.data???
+    const stocks = response.data
     dispatch(fetchStocksSuccess(stocks));
   } catch (err) {
     dispatch(fetchStocksError());
   }
 };
+
+const buyStockSuccess = () => ({
+  type: BUY_STOCK_SUCCESS
+});

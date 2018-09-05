@@ -11,8 +11,6 @@ import './style.scss';
 class Dashboard extends Component {
   componentDidMount() {
     console.log(this.props);
-    const { getCurrentPrice } = this.props;
-    getCurrentPrice('MSFT');
   }
 
   render() {

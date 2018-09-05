@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../../actions/companies';
+import { getFollowedCompanies } from '../../../actions/companies';
+import { getMyStocks } from '../../../actions/stocks';
 
 import './style.scss';
 
@@ -12,7 +13,6 @@ class Sidebar extends Component {
   }
 
   componentDidMount() {
-    console.log('SIDEBAR PROPS: ', this.props);
     const { getFollowedCompanies, getMyStocks } = this.props;
     getFollowedCompanies(this.currentUserId);
     getMyStocks(this.currentUserId);
@@ -24,24 +24,6 @@ class Sidebar extends Component {
       <div className="sidebar-container">
 
         <div className="sidebar">
-          <div className="watchlist-header">
-            Watchlist
-          </div>
-          <ul className="watchlist">
-            {
-              followedCompanies.map(company => (
-                <li className="watchlist-item">
-                  <span className="company-symbol">
-                    { company.symbol }
-                  </span>
-                  <span className="company-price">
-                    $
-                    { company.price }
-                  </span>
-                </li>
-              ))
-            }
-          </ul>
           <div className="stocks-list-header">
             Stocks
           </div>
@@ -60,6 +42,24 @@ class Sidebar extends Component {
               ))
             }
           </ul>
+          <div className="watchlist-header">
+            Watchlist
+          </div>
+          <ul className="watchlist">
+            {
+              followedCompanies.map(company => (
+                <li className="watchlist-item">
+                  <span className="company-symbol">
+                    { company.symbol }
+                  </span>
+                  <span className="company-price">
+                    $
+                    { company.price }
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
         </div>
       </div>
     );
@@ -73,4 +73,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, actions)(Sidebar);
+const mapDispatchToProps = dispatch => ({
+  getFollowedCompanies: currentUserId => dispatch(getFollowedCompanies(currentUserId)),
+  getMyStocks: currentUserId => dispatch(getMyStocks(currentUserId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
