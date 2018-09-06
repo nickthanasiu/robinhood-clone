@@ -3,76 +3,13 @@ import { connect } from 'react-redux';
 import Header from '../Header';
 import Chart from './Chart';
 import NewsFeed from './NewsFeed';
-import SideBar from './Sidebar';
-import { followCompany, unfollowCompany } from '../../actions/companies';
-import { buyStock } from '../../actions/stocks';
+import SidebarContainer from './Sidebar';
 
 import './style.scss';
 
 class CompanyPage extends Component {
-  constructor(props) {
-    super(props);
-    // @TODO: MOVE STATE TO REDUX STORE?
-    this.state = {
-      following: false,
-    };
-
-    this.currentUserId = localStorage.getItem('currentUserId');
-
-    this.handleButtonClick = this.handleButtonClick.bind(this);
-    this.handleBuyStock = this.handleBuyStock.bind(this);
-    this.followStock = this.followStock.bind(this);
-    this.unfollowStock = this.unfollowStock.bind(this);
-  }
-
-  componentDidMount() {
-    const { selectedCompany, followedCompanies } = this.props;
-    console.log('COMPANYPAGE PROPS: ', this.props);
-    const index = followedCompanies.map((company) => {
-      return company._id;
-    }).indexOf(selectedCompany._id);
-    if (index !== -1) {
-      this.setState({
-        watching: true,
-      });
-    }
-  }
-
-  handleButtonClick() {
-    // if following, unfollow, otherwise follow
-    const { watching } = this.state;
-    if (!watching) {
-      this.followStock();
-    } else {
-      this.unfollowStock()
-    }
-  }
-
-  handleBuyStock() {
-    const { buyStock, selectedCompany } = this.props;
-    const shares = 1;
-    buyStock(this.currentUserId, selectedCompany._id, selectedCompany.price, shares);
-  }
-
-  followStock() {
-    const { followCompany, selectedCompany } = this.props;
-    followCompany(this.currentUserId, selectedCompany._id);
-    this.setState({
-      watching: true
-    });
-  }
-
-  unfollowStock() {
-    const { unfollowCompany, selectedCompany } = this.props;
-    unfollowCompany(this.currentUserId, selectedCompany._id);
-    this.setState({
-      watching: false
-    });
-  }
-
   render() {
     const { selectedCompany } = this.props;
-    const { watching } = this.state;
     return (
       <div className="company-page">
         <div className="column-left">
@@ -195,11 +132,9 @@ class CompanyPage extends Component {
 
         <div className="column-right">
           <div className="sidebar-container">
-            <SideBar
-              company={selectedCompany}
-              watching={watching}
-              handleButtonClick={this.handleButtonClick}
-              handleBuyStock={this.handleBuyStock}
+            <SidebarContainer
+              selectedCompany={selectedCompany}
+              handleWatchButtonClick={this.handleWatchButtonClick}
             />
           </div>
         </div>
@@ -211,19 +146,10 @@ class CompanyPage extends Component {
 const mapStateToProps = (state) => {
   return {
     selectedCompany: state.companies.selectedCompany,
-    followedCompanies: state.companies.followedCompanies,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  followCompany: (currentUserId, companyId) => dispatch(followCompany(currentUserId, companyId)),
-  unfollowCompany: (currentUserId, companyId) => dispatch(unfollowCompany(currentUserId, companyId)),
-  buyStock: (currentUserId, companyId, companyPrice, shares) => dispatch(buyStock(currentUserId, companyId, companyPrice, shares)),
-});
 
 const CompanyPageWithHeader = Header(CompanyPage);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CompanyPageWithHeader);
+export default connect(mapStateToProps)(CompanyPageWithHeader);

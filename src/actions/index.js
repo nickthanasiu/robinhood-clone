@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import axios from 'axios';
-import { AUTH_USER, AUTH_ERROR } from './types';
+import { AUTH_USER, AUTH_ERROR, CURRENT_USER } from './types';
 
 const API_URL = 'http://localhost:3090';
 
@@ -23,6 +23,11 @@ export const signup = (formProps, callback) => async dispatch => {
   }
 };
 
+const currentUser = currentUserId => ({
+  type: CURRENT_USER,
+  payload: { currentUserId }
+});
+
 export const signin = (formProps, callback) => async dispatch => {
   try {
     const response = await axios.post(`${API_URL}/signin`, formProps);
@@ -32,8 +37,9 @@ export const signin = (formProps, callback) => async dispatch => {
     });
 
     localStorage.setItem('token', response.data.token);
-    localStorage.setItem('currentUserId', response.data.currentUserId);
+    dispatch(currentUser(response.data.currentUserId));
     callback();
+
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
