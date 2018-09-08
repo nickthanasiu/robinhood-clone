@@ -13,15 +13,6 @@ const StockSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Company',
   },
-  company_name: {
-    type: String,
-  },
-  company_symbol: {
-    type: String,
-  },
-  price: {
-    type: Number,
-  },
   num_shares: {
     type: Number,
   },

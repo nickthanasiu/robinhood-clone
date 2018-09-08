@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   followCompany: (currentUserId, companyId) => dispatch(followCompany(currentUserId, companyId)),
   unfollowCompany: (currentUserId, companyId) => dispatch(unfollowCompany(currentUserId, companyId)),
-  buyStock: (currentUserId, companyId, companyPrice, shares) => dispatch(buyStock(currentUserId, companyId, companyPrice, shares)),
+  buyStock: (currentUserId, companyId, shares) => dispatch(buyStock(currentUserId, companyId, shares)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

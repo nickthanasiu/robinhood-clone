@@ -88,14 +88,7 @@ class Sidebar extends Component {
     e.preventDefault();
     const { buyStock, selectedCompany, currentUserId } = this.props;
     const { numShares } = this.state;
-    buyStock(
-      currentUserId,
-      selectedCompany._id,
-      selectedCompany.name,
-      selectedCompany.symbol,
-      selectedCompany.price,
-      numShares
-    );
+    buyStock(currentUserId, selectedCompany._id, numShares);
     this.setState({
       numShares: ''
     });

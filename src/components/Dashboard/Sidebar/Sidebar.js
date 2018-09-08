@@ -14,7 +14,6 @@ class Sidebar extends Component {
     const { getFollowedCompanies, getMyStocks, currentUserId } = this.props;
     getFollowedCompanies(currentUserId);
     getMyStocks(currentUserId);
-    
   }
 
   componentDidUpdate() {
@@ -39,7 +38,7 @@ class Sidebar extends Component {
                   </span>
                   <span className="company-price">
                     $
-                    { stock.price }
+                    { stock.value }
                   </span>
                 </li>
               ))
