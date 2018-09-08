@@ -11,6 +11,7 @@ const initialState = {
   myStocks: [],
   loadingMyStocks: false,
   myStocksError: '',
+  buyStockLoading: false,
   buyStockError: '',
 };
 
@@ -35,9 +36,21 @@ export default (state = initialState, action) => {
         myStocksError: action.payload.error,
         myStocks: [],
       };
+    case BUY_STOCK_BEGIN:
+      return {
+        ...state,
+        buyStockLoading: true,
+        buyStockError: '',
+      };
+    case BUY_STOCK_SUCCESS:
+      return {
+        ...state,
+        buyStockLoading: false,
+      };
     case BUY_STOCK_ERROR:
       return {
         ...state,
+        buyStockLoading: false,
         buyStockError: action.payload.error,
       };
     default:

@@ -32,6 +32,7 @@ export const getMyStocks = currentUserId => async dispatch => {
 
     const response = await axios.post(`${API_URL}/get_stocks`, { currentUserId });
     const stocks = response.data
+
     dispatch(fetchStocksSuccess(stocks));
   } catch (err) {
     dispatch(fetchStocksError());
@@ -52,14 +53,20 @@ const buyStockError = error => ({
   payload: { error }
 });
 
-export const buyStock = (currentUserId, companyId, companyPrice, shares) => async dispatch => {
+export const buyStock = (currentUserId, companyId, companyName, companySymbol, companyPrice, shares) => async dispatch => {
   try {
+    dispatch(buyStockBegin());
+
     const response = await axios.post(`${API_URL}/buy_stock`, {
       currentUserId,
       companyId,
+      companName,
+      companySymbol,
       companyPrice,
       shares
     });
+
+    dispatch(buyStockSuccess());
 
     console.log('BUY STOCK ACTION RESPONSE: ', response);
   } catch (err) {

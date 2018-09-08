@@ -27,9 +27,7 @@ exports.signup = (req, res, next) => {
 
   // Make sure all required fields are included in signup
   if (!firstName || !lastName || !email || !password) {
-    console.log('HERE IS REQ.BODY WITHIN MISSING FIELD ERROR: ', req.body);
-    signupError = 'Missing required field(s)';
-    return res.status(422).send({ error: `${signupError}` });
+    return res.status(422).send({ error: 'Missing required field(s)' });
   }
 
   // Check if user with given email exists
@@ -40,8 +38,7 @@ exports.signup = (req, res, next) => {
 
     // If a user with provided email already exists, return error
     if (existingUser) {
-      signupError = 'Provided email is already in use';
-      return res.status(422).send({ error: `${signupError}` });
+      return res.status(422).send({ error: 'Provided email is already in use' });
     }
 
     // If a user with provided email does NOT exist,

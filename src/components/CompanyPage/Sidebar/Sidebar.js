@@ -7,13 +7,18 @@ class Sidebar extends Component {
     super(props);
     this.state = {
       watching: false,
-      num_shares: '',
+      numShares: '',
+      estimatedCost: (0).toFixed(2),
+      orderSummaryDisplay: 'none',
+      orderButtonDisplay: 'Buy',
     };
 
+    this.updateNumShares = this.updateNumShares.bind(this);
     this.handleWatchButtonClick = this.handleWatchButtonClick.bind(this);
     this.watchCompany = this.watchCompany.bind(this);
     this.unwatchCompany = this.unwatchCompany.bind(this);
     this.handleBuyButtonClick = this.handleBuyButtonClick.bind(this);
+    this.handleSubmitButtonClick = this.handleSubmitButtonClick.bind(this);
   }
 
   componentDidMount() {
@@ -26,6 +31,12 @@ class Sidebar extends Component {
         watching: true
       });
     }
+  }
+
+  updateNumShares() {
+    this.setState({
+      numShares: this.sharesInput.value
+    });
   }
 
   // @TODO: Change all 'follow' actions to 'watch'
@@ -56,16 +67,69 @@ class Sidebar extends Component {
     });
   }
 
+  // @TODO: Things to consider when 'buying' stock:
+    // Should not create new StockItem if current User already owns the stock. Should instead update pre-existing object
+    // This component needs access to the following state: selectedCompany, currentUserId, numShares of selectedCompany owned by currentUserId
+    //
+
+
   handleBuyButtonClick(e) {
-    const { buyStock, selectedCompany, currentUserId } = this.props;
     e.preventDefault();
-    const shares = 1;
-    buyStock(currentUserId, selectedCompany._id, selectedCompany.price, shares);
+    const { selectedCompany } = this.props;
+    const { numShares } = this.state;
+    this.setState({
+      estimatedCost: (selectedCompany.price * numShares).toFixed(2),
+      orderSummaryDisplay: 'flex',
+      orderButtonDisplay: 'Submit',
+    });
+  }
+
+  handleSubmitButtonClick(e) {
+    e.preventDefault();
+    const { buyStock, selectedCompany, currentUserId } = this.props;
+    const { numShares } = this.state;
+    buyStock(
+      currentUserId,
+      selectedCompany._id,
+      selectedCompany.name,
+      selectedCompany.symbol,
+      selectedCompany.price,
+      numShares
+    );
+    this.setState({
+      numShares: ''
+    });
+  }
+
+  renderBuyButton() {
+    return (
+      <button type="button" onClick={this.handleBuyButtonClick}>
+        Buy
+      </button>
+    );
+  }
+
+  renderSubmitButton() {
+    const { buyStockLoading } = this.props;
+    return (
+      <button type="submit" onClick={this.handleSubmitButtonClick}>
+        {
+          buyStockLoading ? 'Submitting...' : 'Submit'
+        }
+      </button>
+    );
   }
 
   render() {
     const { selectedCompany } = this.props;
-    const { watching } = this.state;
+    const {
+      watching,
+      numShares,
+      estimatedCost,
+      orderSummaryDisplay,
+      orderButtonDisplay,
+    } = this.state;
+
     return (
       <div className="sidebar">
 
@@ -81,7 +145,14 @@ class Sidebar extends Component {
               <span>
                 Shares
               </span>
-              <input type="number" name="shares" placeholder="0" />
+              <input
+                type="number"
+                name="shares"
+                placeholder="0"
+                ref={(input) => { this.sharesInput = input }}
+                onChange={this.updateNumShares}
+                value={numShares}
+              />
             </div>
 
             <div className="market-price buy-form-elem">
@@ -98,14 +169,22 @@ class Sidebar extends Component {
                 Estimated Cost
               </span>
               <span>
-                $0.00
+                $
+                { estimatedCost}
               </span>
             </div>
 
-            <div className="buy-button-container">
-              <button type="submit" onClick={this.handleBuyButtonClick}>
-                Buy
-              </button>
+            <div className="order-summary buy-form-elem" style={{ display: orderSummaryDisplay }}>
+              {`
+                You are about to submit an order for ${numShares} share(s) to buy ${selectedCompany.symbol}
+                for $${estimatedCost}. This order will execute at the best available price.
+              `}
+            </div>
+
+            <div className="order-button-container">
+              {
+                orderButtonDisplay === 'Buy' ? this.renderBuyButton() : this.renderSubmitButton()
+              }
             </div>
           </form>
 

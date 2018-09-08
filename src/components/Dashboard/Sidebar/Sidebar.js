@@ -8,14 +8,17 @@ import './style.scss';
 class Sidebar extends Component {
   constructor(props) {
     super(props);
-
-    this.currentUserId = localStorage.getItem('currentUserId');
   }
 
   componentDidMount() {
-    const { getFollowedCompanies, getMyStocks } = this.props;
-    getFollowedCompanies(this.currentUserId);
-    getMyStocks(this.currentUserId);
+    const { getFollowedCompanies, getMyStocks, currentUserId } = this.props;
+    getFollowedCompanies(currentUserId);
+    getMyStocks(currentUserId);
+    
+  }
+
+  componentDidUpdate() {
+    console.log('DASHBOARD SIDEBAR PROPS: ', this.props);
   }
 
   render() {
@@ -70,6 +73,7 @@ const mapStateToProps = (state) => {
   return {
     followedCompanies: state.companies.followedCompanies,
     myStocks: state.stocks.myStocks,
+    currentUserId: state.auth.currentUserId,
   };
 };
 

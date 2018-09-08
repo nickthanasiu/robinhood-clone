@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 const mapStateToProps = state => ({
   currentUserId: state.auth.currentUserId,
   followedCompanies: state.companies.followedCompanies,
+  buyStockLoading: state.stocks.buyStockLoading,
 });
 
 const mapDispatchToProps = dispatch => ({
