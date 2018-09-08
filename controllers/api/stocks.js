@@ -65,8 +65,6 @@ exports.get_stocks = (req, res, next) => {
       return next(err);
     }
 
-    console.log('ALL THE STOCK WE FOUND: ', stocks);
-
     // let shares = 0;
     stocks.forEach((stock) => {
       const n = shareTotals.get(stock.company_id.toString()) === undefined ? 0 : shareTotals.get(stock.company_id.toString());
