@@ -23,6 +23,6 @@ module.exports = (app) => {
   app.post('/api/buy_stock', StocksController.buy_stock);
   app.post('/api/get_stocks', StocksController.get_stocks);
   app.post('/api/newsfeed', NewsfeedController.newsFeed);
-  app.post('/api/intraday_data', MarketDataController.intraday_data);
+  app.post('/api/latest_price', MarketDataController.latest_price);
   app.post('/api/daily_data', MarketDataController.daily_data);
 };
