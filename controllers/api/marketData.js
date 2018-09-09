@@ -4,17 +4,45 @@ const util = require('util');
 const API_KEY = 'KMUV9GNYBNT67P4R';
 const API_URL = 'https://www.alphavantage.co';
 
+
+const diffMinutes = (dt1) => {
+  let now = new Date(Date.now());
+  let diff = (now.getTime() - dt1.getTime()) / 1000;
+  diff /= 60;
+  return Math.abs(Math.round(diff));
+};
+
+const cache = new Map();
+
 // @TODO: Catch errors
 
 exports.latest_price = async (req, res) => {
   const { query } = req.body;
+  const symbol = query;
 
-  const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_INTRADAY&symbol=${query}&interval=5min&apikey=${API_KEY}`);
-  const metaData = Object.values(response.data)[0];
-  const timeData = Object.values(response.data)[1];
-  const lastRefresh = Object.values(metaData)[2];
-  const lastData = Object.values(timeData[lastRefresh]);
-  res.json(lastData[3]);
+  const apiGet = async () => {
+    const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${API_KEY}`);
+    const metaData = Object.values(response.data)[0];
+    const timeData = Object.values(response.data)[1];
+    const lastRefresh = Object.values(metaData)[2];
+    const lastData = Object.values(timeData[lastRefresh]);
+    const lastClose = lastData[3];
+
+    return {
+      time: lastRefresh,
+      value: lastClose
+    };
+  };
+
+  let cacheVal = cache.get(symbol);
+  if (!cacheVal || diffMinutes(new Date(cacheVal.time)) > 5) {
+    console.log('Retrieving fresh prices!!!');
+    const retrieve = await apiGet();
+    console.log(retrieve);
+    cache.set(symbol, retrieve);
+    cacheVal = retrieve;
+  }
+  res.json(cacheVal.value);
 };
 
 exports.daily_data = async (req, res) => {
