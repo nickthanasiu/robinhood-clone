@@ -33,9 +33,18 @@ class Sidebar extends Component {
             {
               myStocks.map(stock => (
                 <li className="stocks-list-item">
-                  <span className="company-symbol">
-                    { stock.symbol }
-                  </span>
+                  <div className="list-item-left">
+                    <span className="company-symbol">
+                      { stock.symbol }
+                    </span>
+                    <span className="company-shares">
+                      {
+                        stock.shares === 1 ?
+                          `${stock.shares} Share` :
+                          `${stock.shares} Shares`
+                      }
+                    </span>
+                  </div>
                   <span className="company-price">
                     $
                     { stock.value }
