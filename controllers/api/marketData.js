@@ -5,11 +5,16 @@ const API_KEY = 'KMUV9GNYBNT67P4R';
 const API_URL = 'https://www.alphavantage.co';
 
 
-const diffMinutes = (dt1) => {
-  let now = new Date(Date.now());
-  let diff = (now.getTime() - dt1.getTime()) / 1000;
+const cacheShouldRefresh = (timestamp) => {
+  const now = new Date(Date.now());
+  if (now.getDay() === 0 || now.getDay() === 6) {
+    return false;
+  }
+
+  const date = new Date(timestamp);
+  let diff = (now.getTime() - date.getTime()) / 1000;
   diff /= 60;
-  return Math.abs(Math.round(diff));
+  return Math.abs(Math.round(diff)) > 5;
 };
 
 const cache = new Map();
@@ -35,7 +40,7 @@ exports.latest_price = async (req, res) => {
   };
 
   let cacheVal = cache.get(symbol);
-  if (!cacheVal || diffMinutes(new Date(cacheVal.time)) > 5) {
+  if (!cacheVal || cacheShouldRefresh(cacheVal.time)) {
     console.log('Retrieving fresh prices!!!');
     const retrieve = await apiGet();
     console.log(retrieve);
