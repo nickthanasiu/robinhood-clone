@@ -23,6 +23,10 @@ export const BUY_STOCK_BEGIN = 'buy_stock_begin';
 export const BUY_STOCK_SUCCESS = 'buy_stock_success';
 export const BUY_STOCK_ERROR = 'buy_stock_error';
 
+export const SELL_STOCK_BEGIN = 'sell_stock_begin';
+export const SELL_STOCK_SUCCESS = 'sell_stock_success';
+export const SELL_STOCK_ERROR = 'sell_stock_error';
+
 export const FETCH_ARTICLES_BEGIN = 'fetch_articles_begin';
 export const FETCH_ARTICLES_SUCCESS = 'fetch_articles_success';
 export const FETCH_ARTICLES_ERROR = 'fetch_articles_error';

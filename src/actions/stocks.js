@@ -8,6 +8,9 @@ import {
   BUY_STOCK_BEGIN,
   BUY_STOCK_SUCCESS,
   BUY_STOCK_ERROR,
+  SELL_STOCK_BEGIN,
+  SELL_STOCK_SUCCESS,
+  SELL_STOCK_ERROR,
 } from './types';
 
 const API_URL = 'http://localhost:3090/api';
@@ -69,5 +72,29 @@ export const buyStock = (currentUserId, companyId, shares) => async dispatch => 
     console.log('BUY STOCK ACTION RESPONSE: ', response);
   } catch (err) {
     dispatch(buyStockError(err));
+  }
+};
+
+const sellStockBegin = () => ({
+  type: SELL_STOCK_BEGIN
+});
+
+const sellStockSuccess = () => ({
+  type: SELL_STOCK_SUCCESS
+});
+
+const sellStockError = error => ({
+  type: SELL_STOCK_ERROR,
+  payload: { error }
+});
+
+export const sellStock = (currentUserId, companyId, shares) => async dispatch => {
+  try {
+    dispatch(sellStockBegin());
+
+    console.log('SELLING STOCK ACTION WITH USER_ID: ', currentUserId, ' COMPANY_ID: ', companyId, ' number of shares: ', shares);
+
+  } catch(err) {
+    dispatch(sellStockError(err));
   }
 };

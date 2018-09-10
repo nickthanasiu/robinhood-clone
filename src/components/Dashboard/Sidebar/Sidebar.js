@@ -16,10 +16,6 @@ class Sidebar extends Component {
     getMyStocks(currentUserId);
   }
 
-  componentDidUpdate() {
-    console.log('DASHBOARD SIDEBAR PROPS: ', this.props);
-  }
-
   render() {
     const { followedCompanies, myStocks } = this.props;
     return (

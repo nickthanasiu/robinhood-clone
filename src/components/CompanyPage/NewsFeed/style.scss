@@ -3,6 +3,7 @@
 .newsfeed {
   margin-top: 2rem;
 
+
   & > h3 {
     border-bottom: 1px solid $grey;
     padding: 1rem 0;
@@ -17,6 +18,7 @@
     }
 
     .article {
+      font-family: 'PT Sans', sans-serif;
       padding: .5rem 1rem;
       margin-bottom: 1rem;
       height: 12rem;

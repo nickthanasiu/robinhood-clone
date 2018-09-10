@@ -1,7 +1,7 @@
 const Stock = require('../../models/Stock');
 const Company = require('../../models/Company');
 
-exports.buy_stock = (req, res, next) => {
+exports.buy_stock = (req, res) => {
 
   const {
     currentUserId,
@@ -29,6 +29,26 @@ exports.buy_stock = (req, res, next) => {
   stock.save();
 
   res.json(stock);
+};
+
+exports.sell_stock = (req, res) => {
+
+  const {
+    currentUserId,
+    companyId,
+    shares,
+  } = req.body;
+
+  // Make sure all required arguments are passed
+  if (!currentUserId || !companyId) {
+    res.status(422).send({ error: 'Both user and company id\'s are required to sell stock' });
+  }
+
+  if (!shares) {
+    res.status(422).send({ error: 'Number of shares are required to sell stock' });
+  }
+
+
 };
 
 
@@ -65,7 +85,7 @@ exports.get_stocks = (req, res, next) => {
         myStocks.push({
           symbol: company.symbol,
           shares: shareTotals.get(company._id.toString()),
-          value: company.price * shareTotals.get(company._id.toString())
+          value: company.price * shareTotals.get(company._id.toString()).toFixed(2),
         });
       });
 
