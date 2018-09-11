@@ -35,9 +35,9 @@ export const GET_INTRADAY_BEGIN = 'get_intraday_begin';
 export const GET_INTRADAY_SUCCESS = 'get_intraday_success';
 export const GET_INTRADAY_ERROR = 'get_intraday_error';
 
-export const GET_CURRENT_BEGIN = 'get_current_begin';
-export const GET_CURRENT_SUCCESS = 'get_current_success';
-export const GET_CURRENT_ERROR = 'get_current_error';
+export const GET_LATEST_BEGIN = 'get_latest_begin';
+export const GET_LATEST_SUCCESS = 'get_latest_success';
+export const GET_LATEST_ERROR = 'get_latest_error';
 
 export const GET_DAILY_BEGIN = 'get_daily_begin';
 export const GET_DAILY_SUCCESS = 'get_daily_success';

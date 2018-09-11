@@ -21,7 +21,6 @@ class NewsFeed extends Component {
 
   componentDidUpdate() {
     const { articles } = this.props;
-    console.log('HERE ARE THE ARTICLES: ', articles);
   }
 
   render() {

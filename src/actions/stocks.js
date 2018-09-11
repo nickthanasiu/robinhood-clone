@@ -34,7 +34,6 @@ export const getMyStocks = currentUserId => async dispatch => {
     dispatch(fetchStocksBegin());
 
     const response = await axios.post(`${API_URL}/get_stocks`, { currentUserId });
-    console.log('getMyStocks RESPONSE: ', response.data);
     const stocks = response.data;
 
     dispatch(fetchStocksSuccess(stocks));

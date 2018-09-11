@@ -74,15 +74,18 @@ exports.sell_stock = (req, res, next) => {
         return next(err);
       }
 
-      // If no error, the Stocks should have been removed
-      // Then, create and save new Stock with updated number of shares
-      const newStock = new Stock({
-        user_id: currentUserId,
-        company_id: companyId,
-        num_shares: shareTotal.get(companyId.toString()),
-      });
+      // Only create a new Stock if user still owns 1 or more shares in the company
+      if (shareTotal.get(companyId.toString())) {
+        // If no error, the Stocks should have been removed
+        // Then, create and save new Stock with updated number of shares
+        const newStock = new Stock({
+          user_id: currentUserId,
+          company_id: companyId,
+          num_shares: shareTotal.get(companyId.toString()),
+        });
 
-      newStock.save();
+        newStock.save();
+      }
     });
   });
 };

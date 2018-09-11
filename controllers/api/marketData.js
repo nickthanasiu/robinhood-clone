@@ -22,8 +22,8 @@ const cache = new Map();
 // @TODO: Catch errors
 
 exports.latest_price = async (req, res) => {
-  const { query } = req.body;
-  const symbol = query;
+
+  const { symbol } = req.body;
 
   const apiGet = async () => {
     const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${API_KEY}`);

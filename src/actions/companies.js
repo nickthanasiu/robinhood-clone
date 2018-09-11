@@ -17,7 +17,6 @@ const API_URL = 'http://localhost:3090/api';
 
 export const searchCompanies = (query, callback) => async dispatch => {
   try {
-    console.log('Searching Companies for: ', query);
     dispatch({
       type: COMPANY_SEARCH_BEGIN
     });
@@ -58,7 +57,7 @@ export const getCompanies = () => async dispatch => {
 
     const response = await axios.get(`${API_URL}/get_companies`);
     dispatch(getCompaniesSuccess(response.data));
-    
+
   } catch (err) {
     console.log('CAUGHT ERROR: ', err);
     dispatch(getCompaniesError(err));

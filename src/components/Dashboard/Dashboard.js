@@ -9,10 +9,6 @@ import * as actions from '../../actions/marketData';
 import './style.scss';
 
 class Dashboard extends Component {
-  componentDidMount() {
-    console.log(this.props);
-  }
-
   render() {
     return (
       <div className="dashboard">

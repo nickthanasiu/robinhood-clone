@@ -51,6 +51,10 @@ class Sidebar extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log('RECEIVING NEW PROPS: ', nextProps);
+  }
+
 
   isCompanyOwned(company) {
     const { selectedCompany } = this.props;

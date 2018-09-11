@@ -4,9 +4,9 @@ import {
   GET_INTRADAY_BEGIN,
   GET_INTRADAY_SUCCESS,
   GET_INTRADAY_ERROR,
-  GET_CURRENT_BEGIN,
-  GET_CURRENT_SUCCESS,
-  GET_CURRENT_ERROR,
+  GET_LATEST_BEGIN,
+  GET_LATEST_SUCCESS,
+  GET_LATEST_ERROR,
   GET_DAILY_BEGIN,
   GET_DAILY_SUCCESS,
   GET_DAILY_ERROR,
@@ -73,32 +73,29 @@ export const getDaily = symbol => async (dispatch) => {
   }
 };
 
-const getCurrentBegin = () => ({
+const getLatestBegin = () => ({
   type: 'GET_CURRENT_BEGIN',
 });
 
-const getCurrentSuccess = data => ({
+const getLatestSuccess = data => ({
   type: 'GET_CURRENT_SUCCESS',
   payload: { data }
 });
 
-const getCurrentError = error => ({
+const getLatestError = error => ({
   type: 'GET_CURRENT_ERROR',
   payload: { error }
 });
 
-export const getCurrentPrice = symbol => async (dispatch) => {
+export const getLatestPrice = symbol => async (dispatch) => {
   try {
-    dispatch(getCurrentBegin());
+    dispatch(getLatestBegin());
 
-    const response = await axios.post(`${API_URL}/daily_data`, {
-      query: symbol
-    });
-    const responseArray = Object.entries(response.data);
-    const mostRecent = responseArray[0][1];
-    const lastClose = Object.entries(mostRecent)[3][1];
-    dispatch(getCurrentSuccess(lastClose));
+    const response = await axios.post(`${API_URL}/latest_price`, { symbol });
+
+    console.log('GETLATESTPRICE RESPONSE: ', response.data);
+    // dispatch(getLatestSuccess(lastClose));
   } catch (err) {
-    dispatch(getCurrentError(err));
+    dispatch(getLatestError(err));
   }
 };

@@ -24,13 +24,11 @@ const fetchArticlesError = error => ({
 
 export const fetchArticles = query => async dispatch => {
   try {
-    console.log('FIRING FETCH ARTICLES ACTION!');
     dispatch(fetchArticlesBegin());
 
     const response = await axios.post(`${API_URL}/newsfeed`, { query });
     const { articles } = response.data;
 
-    console.log('FETCH ARTICLES RESPONSE: ', articles);
     dispatch(fetchArticlesSuccess(articles));
   } catch (err) {
     dispatch(fetchArticlesError(err));

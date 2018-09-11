@@ -5,6 +5,9 @@ import {
   BUY_STOCK_BEGIN,
   BUY_STOCK_SUCCESS,
   BUY_STOCK_ERROR,
+  SELL_STOCK_BEGIN,
+  SELL_STOCK_SUCCESS,
+  SELL_STOCK_ERROR,
 } from '../actions/types';
 
 const initialState = {
@@ -13,6 +16,8 @@ const initialState = {
   myStocksError: '',
   buyStockLoading: false,
   buyStockError: '',
+  sellStockLoading: false,
+  sellStockError: '',
 };
 
 export default (state = initialState, action) => {
@@ -52,6 +57,23 @@ export default (state = initialState, action) => {
         ...state,
         buyStockLoading: false,
         buyStockError: action.payload.error,
+      };
+    case SELL_STOCK_BEGIN:
+      return {
+        ...state,
+        sellStockLoading: true,
+        sellStockError: '',
+      };
+    case SELL_STOCK_SUCCESS:
+      return {
+        ...state,
+        sellStockLoading: false,
+      };
+    case SELL_STOCK_ERROR:
+      return {
+        ...state,
+        sellStockLoading: false,
+        sellStockError: action.payload.error,
       };
     default:
       return state;
