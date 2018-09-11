@@ -31,7 +31,7 @@ exports.buy_stock = (req, res) => {
   res.json(stock);
 };
 
-exports.sell_stock = (req, res) => {
+exports.sell_stock = (req, res, next) => {
 
   const {
     currentUserId,
@@ -48,7 +48,43 @@ exports.sell_stock = (req, res) => {
     res.status(422).send({ error: 'Number of shares are required to sell stock' });
   }
 
+  const shareTotal = new Map();
 
+  Stock.find({ $and: [{ user_id: currentUserId }, { company_id: companyId }] }, (err, stocks) => {
+    if (err) {
+      return next(err);
+    }
+
+    console.log('Stock find search found: ', stocks);
+
+    stocks.forEach((stock) => {
+      const n = shareTotal.get(stock.company_id.toString()) === undefined ?
+        0 : shareTotal.get(stock.company_id.toString());
+
+      shareTotal.set(stock.company_id.toString(), n + stock.num_shares);
+    });
+
+    // Subtract the number of shares being sold from shareTotal
+    shareTotal.set(companyId.toString(), shareTotal.get(companyId.toString()) - shares);
+    console.log('SHARETOTAL MAP: ', shareTotal.get(companyId.toString()));
+
+    // Once shareTotal is set, delete existing stocks associated with the given company_id
+    Stock.remove({ company_id: companyId }, (error) => {
+      if (error) {
+        return next(err);
+      }
+
+      // If no error, the Stocks should have been removed
+      // Then, create and save new Stock with updated number of shares
+      const newStock = new Stock({
+        user_id: currentUserId,
+        company_id: companyId,
+        num_shares: shareTotal.get(companyId.toString()),
+      });
+
+      newStock.save();
+    });
+  });
 };
 
 
@@ -65,14 +101,16 @@ exports.get_stocks = (req, res, next) => {
       return next(err);
     }
 
+    console.log('FOUND THESE STOCKS FOR GIVEN USER_ID: ', stocks);
+
     stocks.forEach((stock) => {
-      const n = shareTotals.get(
-        stock.company_id.toString()) === undefined ? 0 : shareTotals.get(stock.company_id.toString()
-        );
+      const n = shareTotals.get(stock.company_id.toString()) === undefined ?
+        0 : shareTotals.get(stock.company_id.toString());
 
       shareTotals.set(stock.company_id.toString(), n + stock.num_shares);
     });
 
+    console.log('SHARE TOTALS MAP BEFORE SEARCHING COMPANIES: ', shareTotals);
 
     Company.find({ _id: { $in: Array.from(shareTotals.keys()) } }, (error, companies) => {
       if (error) {
@@ -80,16 +118,12 @@ exports.get_stocks = (req, res, next) => {
       }
 
       companies.forEach((company) => {
-        console.log('COMPANY IS: ', company);
-        console.log('shareTotals: ', shareTotals);
         myStocks.push({
           symbol: company.symbol,
           shares: shareTotals.get(company._id.toString()),
           value: company.price * shareTotals.get(company._id.toString()).toFixed(2),
         });
       });
-
-      console.log('MY STOCKS: ', myStocks);
 
       res.json(myStocks);
     });

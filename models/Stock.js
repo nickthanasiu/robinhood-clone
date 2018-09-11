@@ -8,13 +8,16 @@ const StockSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
+    required: true,
   },
   company_id: {
     type: mongoose.Schema.ObjectId,
     ref: 'Company',
+    required: true,
   },
   num_shares: {
     type: Number,
+    required: true,
   },
 }, { timestamps: true });
 
