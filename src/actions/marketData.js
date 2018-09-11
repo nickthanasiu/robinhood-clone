@@ -87,6 +87,10 @@ const getLatestError = error => ({
   payload: { error }
 });
 
+const updateCompanyPrice = symbol => {
+  
+};
+
 export const getLatestPrice = symbol => async (dispatch) => {
   try {
     dispatch(getLatestBegin());

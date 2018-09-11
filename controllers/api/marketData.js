@@ -1,4 +1,5 @@
 const axios = require('axios');
+const Company = require('../../models/Company');
 
 
 const API_KEY = 'KMUV9GNYBNT67P4R';
@@ -21,7 +22,7 @@ const cache = new Map();
 
 // @TODO: Catch errors
 
-exports.latest_price = async (req, res) => {
+exports.latest_price = async (req, res, next) => {
 
   const { symbol } = req.body;
 
@@ -47,6 +48,17 @@ exports.latest_price = async (req, res) => {
     cache.set(symbol, retrieve);
     cacheVal = retrieve;
   }
+
+  // Update Company's price in DB with the latest price
+  Company.findOneAndUpdate({ symbol }, { $set: { price: cacheVal.value } }, (err, company) => {
+    if (err) {
+      return next(err);
+    }
+
+    console.log('UPDATED COMPANY: ', company);
+  });
+
+  // Send latest price to client
   res.json(cacheVal.value);
 };
 
