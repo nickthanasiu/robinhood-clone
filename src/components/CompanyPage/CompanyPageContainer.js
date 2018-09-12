@@ -4,6 +4,8 @@ import CompanyPage from './CompanyPage';
 
 const mapStateToProps = state => ({
   selectedCompany: state.companies.selectedCompany,
+  latestPrice: state.marketData.latestPrice,
+  loadingLatestPrice: state.marketData.loadingLatestPrice,
 });
 
 const mapDispatchToProps = dispatch => ({

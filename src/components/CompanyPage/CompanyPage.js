@@ -13,7 +13,7 @@ class CompanyPage extends Component {
   }
 
   render() {
-    const { selectedCompany } = this.props;
+    const { selectedCompany, latestPrice, loadingLatestPrice } = this.props;
     return (
       <div className="company-page">
         <div className="column-left">
@@ -23,7 +23,7 @@ class CompanyPage extends Component {
             </h2>
             <h2 className="company-price">
               $
-              { selectedCompany.price }
+              { loadingLatestPrice ? selectedCompany.price : latestPrice }
             </h2>
 
             <span className="price-change">
@@ -35,7 +35,9 @@ class CompanyPage extends Component {
           </div>
 
           <div className="chart-container">
-            <Chart />
+            <Chart
+              selectedCompany={selectedCompany}
+            />
           </div>
 
           <div className="company-about">
@@ -138,6 +140,8 @@ class CompanyPage extends Component {
           <div className="sidebar-container">
             <SidebarContainer
               selectedCompany={selectedCompany}
+              latestPrice={latestPrice}
+              loadingLatestPrice={loadingLatestPrice}
             />
           </div>
         </div>

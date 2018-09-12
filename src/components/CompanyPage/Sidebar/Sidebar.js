@@ -192,7 +192,7 @@ class Sidebar extends Component {
       submitButtonDisplay
     } = this.state;
 
-    const { selectedCompany } = this.props;
+    const { selectedCompany, latestPrice, loadingLatestPrice } = this.props;
 
     return (
       <div className="buy-form">
@@ -216,7 +216,7 @@ class Sidebar extends Component {
               Market Price
             </span>
             <span>
-              { selectedCompany.price }
+              { loadingLatestPrice ? selectedCompany.price : latestPrice }
             </span>
           </div>
 
@@ -261,7 +261,7 @@ class Sidebar extends Component {
       submitButtonDisplay
     } = this.state;
 
-    const { selectedCompany } = this.props;
+    const { selectedCompany, latestPrice, loadingLatestPrice } = this.props;
 
     return (
       <div className="buy-form">
@@ -285,7 +285,7 @@ class Sidebar extends Component {
               Market Price
             </span>
             <span>
-              { selectedCompany.price }
+              { loadingLatestPrice ? selectedCompany.price : latestPrice }
             </span>
           </div>
 

@@ -2,25 +2,21 @@ import {
   GET_INTRADAY_BEGIN,
   GET_INTRADAY_SUCCESS,
   GET_INTRADAY_ERROR,
-  GET_CURRENT_BEGIN,
-  GET_CURRENT_SUCCESS,
-  GET_CURRENT_ERROR,
-  GET_DAILY_BEGIN,
-  GET_DAILY_SUCCESS,
-  GET_DAILY_ERROR,
+  GET_LATEST_BEGIN,
+  GET_LATEST_SUCCESS,
+  GET_LATEST_ERROR,
 } from '../actions/types';
-
 
 const initialState = {
   loadingIntraday: false,
-  intradayData: [],
+  intradayData: {},
   intradayError: '',
-  loadingCurrentPrice: false,
-  currentPrice: null,
-  currentPriceError: '',
-  loadingDaily: false,
-  dailyData: [],
-  dailyError: '',
+  loadingLatestPrice: false,
+  latestPrice: null,
+  latestPriceError: '',
+  //loadingDaily: false,
+  //dailyData: [],
+  //dailyError: '',
 };
 
 export default (state = initialState, action) => {
@@ -41,46 +37,27 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loadingIntraday: false,
+        intradayData: {},
         intradayError: action.payload.error,
-        intradayData: [],
       };
-    case GET_CURRENT_BEGIN:
+    case GET_LATEST_BEGIN:
       return {
         ...state,
-        loadingCurrentPrice: true,
-        currentPriceError: '',
+        loadingLatestPrice: true,
+        latestPriceError: '',
       };
-    case GET_CURRENT_SUCCESS:
+    case GET_LATEST_SUCCESS:
       return {
         ...state,
-        loadingCurrentPrice: false,
-        currentPrice: action.payload.data,
+        loadingLatestPrice: false,
+        latestPrice: action.payload.data,
       };
-    case GET_CURRENT_ERROR:
+    case GET_LATEST_ERROR:
       return {
         ...state,
-        loadingCurrentPrice: false,
-        currentPriceError: action.payload.error,
-        currentPrice: null,
-      };
-    case GET_DAILY_BEGIN:
-      return {
-        ...state,
-        loadingDaily: true,
-        dailyError: '',
-      };
-    case GET_DAILY_SUCCESS:
-      return {
-        ...state,
-        loadingDaily: false,
-        dailyData: action.payload.data,
-      };
-    case GET_DAILY_ERROR:
-      return {
-        ...state,
-        loadingDaily: false,
-        dailyError: action.payload.error,
-        dailyData: [],
+        loadingLatestPrice: false,
+        latestPrice: null,
+        latestPriceError: action.payload.error,
       };
     default:
       return state;

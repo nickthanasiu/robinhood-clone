@@ -6,37 +6,32 @@ import {
   GET_INTRADAY_ERROR,
   GET_LATEST_BEGIN,
   GET_LATEST_SUCCESS,
-  GET_LATEST_ERROR,
-  GET_DAILY_BEGIN,
-  GET_DAILY_SUCCESS,
-  GET_DAILY_ERROR,
+  GET_LATEST_ERROR
 } from './types';
 
 const API_URL = 'http://localhost:3090/api';
 
 const getIntradayBegin= () => ({
-  type: 'GET_INTRADAY_BEGIN',
+  type: GET_INTRADAY_BEGIN,
 });
 
 const getIntradaySuccess = data => ({
-  type: 'GET_INTRADAY_SUCCESS',
+  type: GET_INTRADAY_SUCCESS,
   payload: { data },
 });
 
 const getIntradayError = error => ({
-  type: 'GET_INTRADAY_ERROR',
+  type: GET_INTRADAY_ERROR,
   payload: { error },
 });
 
 export const getIntraday = symbol => async (dispatch) => {
   try {
     dispatch(getIntradayBegin());
-    console.log('CALLING GETINTRADAY WITH: ', symbol);
-    const response = await axios.post(`${API_URL}/intraday_data`, {
-      query: symbol,
-    });
+
+    const response = await axios.post(`${API_URL}/intraday_data`, { symbol });
     const responseArray = Object.entries(response.data);
-    console.log('GETINTRADAY RESPONSE: ', responseArray);
+    console.log('GETINTRADAY RESPONSE: ', response.data);
   } catch (err) {
     console.log(err);
   }
@@ -74,31 +69,28 @@ export const getDaily = symbol => async (dispatch) => {
 };
 
 const getLatestBegin = () => ({
-  type: 'GET_CURRENT_BEGIN',
+  type: GET_LATEST_BEGIN,
 });
 
 const getLatestSuccess = data => ({
-  type: 'GET_CURRENT_SUCCESS',
+  type: GET_LATEST_SUCCESS,
   payload: { data }
 });
 
 const getLatestError = error => ({
-  type: 'GET_CURRENT_ERROR',
+  type: GET_LATEST_ERROR,
   payload: { error }
 });
 
-const updateCompanyPrice = symbol => {
-  
-};
 
 export const getLatestPrice = symbol => async (dispatch) => {
   try {
     dispatch(getLatestBegin());
 
     const response = await axios.post(`${API_URL}/latest_price`, { symbol });
+    console.log('ABOUT TO DISPATCH GETLATESTSUCCES WITH DATA: ', response.data);
+    dispatch(getLatestSuccess(response.data));
 
-    console.log('GETLATESTPRICE RESPONSE: ', response.data);
-    // dispatch(getLatestSuccess(lastClose));
   } catch (err) {
     dispatch(getLatestError(err));
   }

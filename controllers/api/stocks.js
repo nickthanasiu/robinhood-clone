@@ -104,8 +104,6 @@ exports.get_stocks = (req, res, next) => {
       return next(err);
     }
 
-    console.log('FOUND THESE STOCKS FOR GIVEN USER_ID: ', stocks);
-
     stocks.forEach((stock) => {
       const n = shareTotals.get(stock.company_id.toString()) === undefined ?
         0 : shareTotals.get(stock.company_id.toString());
@@ -124,7 +122,7 @@ exports.get_stocks = (req, res, next) => {
         myStocks.push({
           symbol: company.symbol,
           shares: shareTotals.get(company._id.toString()),
-          value: company.price * shareTotals.get(company._id.toString()).toFixed(2),
+          value: (company.price * shareTotals.get(company._id.toString())).toFixed(2),
         });
       });
 
