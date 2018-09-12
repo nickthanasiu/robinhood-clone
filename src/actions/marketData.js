@@ -30,10 +30,10 @@ export const getIntraday = symbol => async (dispatch) => {
     dispatch(getIntradayBegin());
 
     const response = await axios.post(`${API_URL}/intraday_data`, { symbol });
-    const responseArray = Object.entries(response.data);
-    console.log('GETINTRADAY RESPONSE: ', response.data);
+
+    dispatch(getIntradaySuccess(response.data));
   } catch (err) {
-    console.log(err);
+    dispatch(getIntradayError(err));
   }
 };
 
