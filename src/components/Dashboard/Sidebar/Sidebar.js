@@ -6,13 +6,9 @@ import { getMyStocks } from '../../../actions/stocks';
 import './style.scss';
 
 class Sidebar extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
-    const { getFollowedCompanies, getMyStocks, currentUserId } = this.props;
-    getFollowedCompanies(currentUserId);
+    const { getMyStocks, currentUserId } = this.props;
     getMyStocks(currentUserId);
   }
 
@@ -75,14 +71,11 @@ class Sidebar extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    followedCompanies: state.companies.followedCompanies,
     myStocks: state.stocks.myStocks,
-    currentUserId: state.auth.currentUserId,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  getFollowedCompanies: currentUserId => dispatch(getFollowedCompanies(currentUserId)),
   getMyStocks: currentUserId => dispatch(getMyStocks(currentUserId)),
 });
 

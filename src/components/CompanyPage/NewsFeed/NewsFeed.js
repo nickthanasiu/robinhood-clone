@@ -6,21 +6,11 @@ import * as actions from '../../../actions/newsfeed';
 import './style.scss';
 
 class NewsFeed extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      foo: 'bar'
-    };
-  }
 
   componentDidMount() {
     const { fetchArticles, company } = this.props;
     // const query = company.name.toLowerCase();
     fetchArticles(company.name);
-  }
-
-  componentDidUpdate() {
-    const { articles } = this.props;
   }
 
   render() {

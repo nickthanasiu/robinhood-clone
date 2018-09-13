@@ -34,3 +34,17 @@ export const fetchArticles = query => async dispatch => {
     dispatch(fetchArticlesError(err));
   }
 };
+
+export const fetchFollowedArticles = queryArray => async dispatch => {
+  try {
+    dispatch(fetchArticlesBegin());
+
+    const response = await axios.post(`${API_URL}/newsfeed_followed`, { queryArray });
+    const { articles } = response.data;
+
+    dispatch(fetchArticlesSuccess(articles));
+
+  } catch (err) {
+    dispatch(fetchArticlesError(err));
+  }
+};

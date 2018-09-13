@@ -1,15 +1,28 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Header from '../Header';
 import Chart from './Chart';
 import SideBar from './Sidebar';
 import requireAuth from '../requireAuth';
-import * as actions from '../../actions/marketData';
 
 import './style.scss';
 
 class Dashboard extends Component {
+
+  componentDidMount() {
+    const { getFollowedCompanies, currentUserId } = this.props;
+    getFollowedCompanies(currentUserId);
+  }
+
+  componentWillReceiveProps(newProps) {
+    console.log('RECEIVING THESE ARTICLES', newProps.articles);
+    console.log('AND THESE FOLLOWEDCOMPANIES: ', newProps.followedCompanies);
+    if (newProps.followedCompanies !== this.props.followedCompanies) {
+      newProps.fetchFollowedArticles(newProps.followedCompanies);
+    }
+  }
+
   render() {
+    const { followedCompanies, currentUserId } = this.props;
     return (
       <div className="dashboard">
 
@@ -33,7 +46,10 @@ class Dashboard extends Component {
 
         <div className="column-right">
           <div className="sidebar-container">
-            <SideBar />
+            <SideBar
+              followedCompanies={followedCompanies}
+              currentUserId={currentUserId}
+            />
           </div>
         </div>
 
@@ -44,4 +60,4 @@ class Dashboard extends Component {
 
 const DashWithHeader = Header(Dashboard);
 
-export default connect(null, actions)(DashWithHeader);
+export default DashWithHeader;
