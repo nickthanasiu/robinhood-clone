@@ -8,6 +8,8 @@ const NewsAPI = require('newsapi');
 
 const newsapi = new NewsAPI(NEWS_API_KEY);
 
+// @TODO: resplace shuffleArray function with a function that sorts the articles by date
+
 const { shuffleArray, getPastWeekDates } = require('../../src/util/newsfeed_util');
 
 // Returns object containing today's date (dates.to) and the date one week ago (dates.from)

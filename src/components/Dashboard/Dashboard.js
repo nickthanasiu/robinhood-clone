@@ -23,7 +23,13 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { followedCompanies, currentUserId, articles } = this.props;
+    const {
+      followedCompanies,
+      currentUserId,
+      articles,
+      loadingArticles
+    } = this.props;
+
     return (
       <div className="dashboard">
 
@@ -47,6 +53,7 @@ class Dashboard extends Component {
           <div className="newsfeed-container">
             <NewsFeed
               articles={articles}
+              loadingArticles={loadingArticles}
             />
           </div>
         </div>

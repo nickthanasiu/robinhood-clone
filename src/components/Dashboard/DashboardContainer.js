@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
   followedCompanies: state.companies.followedCompanies,
   currentUserId: state.auth.currentUserId,
   articles: state.newsfeed.articles,
+  loadingArticles: state.newsfeed.loadingArticles,
 });
 
 const mapDispatchToProps = dispatch => ({
