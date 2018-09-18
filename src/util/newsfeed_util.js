@@ -13,3 +13,29 @@ exports.shuffleArray = (array) => {
   }
   return array;
 };
+
+exports.getPastWeekDates = () => {
+  const dateToString = (n) => {
+    return (n <= 9 ? '0' : '') + (n + 1);
+  };
+
+  const formatDate = (date) => {
+    const mm = dateToString(date.getMonth());
+    const dd = dateToString(date.getDate());
+    const yyyy = date.getFullYear().toString();
+
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  const now = new Date(Date.now());
+  const oneWeekAgo = new Date();
+
+  oneWeekAgo.setDate(now.getDate() - 7);
+
+  const fromTo = {
+    from: formatDate(oneWeekAgo),
+    to: formatDate(now)
+  };
+
+  return fromTo;
+};

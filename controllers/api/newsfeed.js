@@ -8,7 +8,10 @@ const NewsAPI = require('newsapi');
 
 const newsapi = new NewsAPI(NEWS_API_KEY);
 
-const { shuffleArray } = require('../../src/util/newsfeed_util');
+const { shuffleArray, getPastWeekDates } = require('../../src/util/newsfeed_util');
+
+// Returns object containing today's date (dates.to) and the date one week ago (dates.from)
+const dates = getPastWeekDates();
 
 
 exports.newsFeed = (req, res) => {
@@ -21,8 +24,8 @@ exports.newsFeed = (req, res) => {
     q: `${query}`,
     sources: 'bbc-news, the-verge, bloomberg, axios',
     domains: 'bbc.co.uk, techcrunch.com, bloomberg.com, axios.com',
-    from: '2018-09-08',
-    to: '2018-09-15',
+    from: `${dates.from}`,
+    to: `${dates.to}`,
     language: 'en',
     sortBy: 'relevancy',
     page: 1,
@@ -44,8 +47,8 @@ exports.newsFeedFollowed = (req, res) => {
       q: `${companyName}`,
       sources: 'bbc-news, the-verge, bloomberg, axios',
       domains: 'bbc.co.uk, techcrunch.com, bloomberg.com, axios.com',
-      from: '2018-09-08',
-      to: '2018-09-15',
+      from: `${dates.from}`,
+      to: `${dates.to}`,
       language: 'en',
       sortBy: 'relevancy',
       page: 1
