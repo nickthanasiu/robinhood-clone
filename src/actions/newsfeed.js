@@ -40,7 +40,9 @@ export const fetchFollowedArticles = queryArray => async dispatch => {
     dispatch(fetchArticlesBegin());
 
     const response = await axios.post(`${API_URL}/newsfeed_followed`, { queryArray });
-    const { articles } = response.data;
+    const articles = response.data;
+    
+    console.log('fetchFollowedArticles RESPONSE: ', articles);
 
     dispatch(fetchArticlesSuccess(articles));
 

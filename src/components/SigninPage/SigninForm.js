@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter, } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { FaIdBadge, FaChevronLeft } from 'react-icons/fa';
 import * as actions from '../../actions';
 
@@ -35,7 +35,7 @@ class SigninForm extends Component {
 
   dropDown() {
     const { errorMessage } = this.props;
-    const message = errorMessage.length === 0 ? 'Success' : errorMessage;
+    const message = errorMessage.length === 0 ? 'Welcome Back!' : errorMessage;
     const color = errorMessage.length === 0 ? '#30cd9a' : '#f68f7c';
     return (
       <div className="drop-down" style={{ backgroundColor: color }}>

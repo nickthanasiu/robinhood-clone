@@ -8,6 +8,9 @@ const NewsAPI = require('newsapi');
 
 const newsapi = new NewsAPI(NEWS_API_KEY);
 
+const { shuffleArray } = require('../../src/util/newsfeed_util');
+
+
 exports.newsFeed = (req, res) => {
   const { query } = req.body;
 
@@ -16,10 +19,10 @@ exports.newsFeed = (req, res) => {
   // @TODO: Update from/to dates to reflect the current week
   newsapi.v2.everything({
     q: `${query}`,
-    sources: 'bbc-news, the-verge, bloomberg, axios, the-new-york-times',
-    domains: 'bbc.co.uk, techcrunch.com, bloomberg.com, axios.com, nytimes.com',
-    from: '2018-09-01',
-    to: '2018-09-08',
+    sources: 'bbc-news, the-verge, bloomberg, axios',
+    domains: 'bbc.co.uk, techcrunch.com, bloomberg.com, axios.com',
+    from: '2018-09-08',
+    to: '2018-09-15',
     language: 'en',
     sortBy: 'relevancy',
     page: 1,
@@ -29,40 +32,46 @@ exports.newsFeed = (req, res) => {
 };
 
 exports.newsFeedFollowed = (req, res) => {
-
   const { queryArray } = req.body;
-  console.log('CONTROLLER RECEIVED QUERYARRAY: ', queryArray);
+  const companyNames = [];
 
-  newsapi.v2.topHeadlines({
-    sources: 'bbc-news,the-verge',
-    q: 'tesla',
-    language: 'en',
-  }).then((response) => {
-    console.log(response);
-  /*
-    {
-      status: "ok",
-      articles: [...]
-    }
-  */
-});
+  queryArray.forEach((company) => {
+    companyNames.push(company.name);
+  });
+
+  const apiGet = (companyName) => {
+    return newsapi.v2.everything({
+      q: `${companyName}`,
+      sources: 'bbc-news, the-verge, bloomberg, axios',
+      domains: 'bbc.co.uk, techcrunch.com, bloomberg.com, axios.com',
+      from: '2018-09-08',
+      to: '2018-09-15',
+      language: 'en',
+      sortBy: 'relevancy',
+      page: 1
+    });
+  };
+
+  const makePromise = (names) => {
+    const promises = names.map((name) => {
+      return apiGet(name);
+    });
+
+    return Promise.all(promises);
+  };
+
+  makePromise(companyNames)
+    .then((resp) => {
+      const articlesArray = resp.map((responseObj) => {
+        const { articles } = responseObj;
+        articles.splice(3);
+        return articles;
+      });
+      const responseArray = articlesArray.reduce((prev, curr) => {
+        return prev.concat(curr);
+      });
+
+      // Shuffle responseArray before sending
+      res.json(shuffleArray(responseArray));
+    });
 };
-
-/*
-
-newsapi.v2.topHeadlines({
-  sources: 'bbc-news,the-verge',
-  q: 'bitcoin',
-  category: 'business',
-  language: 'en',
-  country: 'us'
-}).then(response => {
-  console.log(response);
-  /*
-    {
-      status: "ok",
-      articles: [...]
-    }
-  */
-//});
-//*/

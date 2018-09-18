@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../Header';
 import Chart from './Chart';
 import SideBar from './Sidebar';
+import NewsFeed from './NewsFeed';
 import requireAuth from '../requireAuth';
 
 import './style.scss';
@@ -22,7 +23,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { followedCompanies, currentUserId } = this.props;
+    const { followedCompanies, currentUserId, articles } = this.props;
     return (
       <div className="dashboard">
 
@@ -42,6 +43,12 @@ class Dashboard extends Component {
           <div className="chart-container">
             <Chart />
           </div>
+
+          <div className="newsfeed-container">
+            <NewsFeed
+              articles={articles}
+            />
+          </div>
         </div>
 
         <div className="column-right">
@@ -52,6 +59,7 @@ class Dashboard extends Component {
             />
           </div>
         </div>
+
 
       </div>
     );
