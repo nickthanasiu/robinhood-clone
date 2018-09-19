@@ -4,16 +4,72 @@ import Chart from './Chart';
 import NewsFeed from './NewsFeed';
 import SidebarContainer from './Sidebar';
 
+import { formatOpenPriceKey } from '../../util/market_data_util';
+
 import './style.scss';
 
 class CompanyPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dailyChange: '',
+      dailyChangePercentage: '',
+      changePositive: true,
+      fillColor: '#30cd9a',
+    };
+
+    this.calculateDailyChange = this.calculateDailyChange.bind(this);
+  }
+
   componentDidMount() {
     const { getLatestPrice, selectedCompany } = this.props;
     getLatestPrice(selectedCompany.symbol);
   }
 
+  componentWillReceiveProps(newProps) {
+    const { getIntraday, selectedCompany } = newProps;
+    if (newProps.latestPrice !== this.props.latestPrice) {
+      getIntraday(selectedCompany.symbol)
+        .then(() => {
+          this.calculateDailyChange();
+        });
+    }
+  }
+
+  calculateDailyChange() {
+    const { intradayData, latestPrice } = this.props;
+    const today = new Date(Date.now());
+    const openPriceKey = formatOpenPriceKey(today);
+    const openPrice = parseFloat(intradayData[openPriceKey], 10);
+    const dailyChange = (latestPrice - openPrice).toFixed(2);
+    const dailyChangePercentage = ((dailyChange / openPrice) * 100).toFixed(2);
+    const changePositive = dailyChange >= 0 ? true : false;
+    const fillColor = dailyChange >= 0 ? '#30cd9a' : '#f68f7c';
+
+    this.setState({
+      dailyChange,
+      dailyChangePercentage,
+      changePositive,
+      fillColor,
+    });
+  }
+
   render() {
-    const { selectedCompany, latestPrice, loadingLatestPrice } = this.props;
+    const {
+      selectedCompany,
+      latestPrice,
+      loadingLatestPrice,
+      intradayData,
+    } = this.props;
+
+    const {
+      dailyChange,
+      dailyChangePercentage,
+      changePositive,
+      fillColor,
+    } = this.state;
+
+    const operator = changePositive ? '+' : '-';
     return (
       <div className="company-page">
         <div className="column-left">
@@ -27,7 +83,9 @@ class CompanyPage extends Component {
             </h2>
 
             <span className="price-change">
-              +$0.40 (1.18%)
+              {`
+                ${operator}${dailyChange} (${dailyChangePercentage}%)
+              `}
               <span className="timespan">
                 Today
               </span>
@@ -37,6 +95,8 @@ class CompanyPage extends Component {
           <div className="chart-container">
             <Chart
               selectedCompany={selectedCompany}
+              fillColor={fillColor}
+              intradayData={intradayData}
             />
           </div>
 
@@ -142,6 +202,7 @@ class CompanyPage extends Component {
               selectedCompany={selectedCompany}
               latestPrice={latestPrice}
               loadingLatestPrice={loadingLatestPrice}
+              fillColor={fillColor}
             />
           </div>
         </div>

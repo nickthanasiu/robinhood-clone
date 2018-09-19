@@ -50,10 +50,6 @@
           margin-left: .25rem;
         }
       }
-
-      .header-active {
-        border-bottom: 2px solid $green;
-      }
     }
 
     form {
@@ -110,7 +106,6 @@
         justify-content: center;
 
         button {
-          background-color: $green;
           font-weight: 500;
           color: $blackish;
           border-radius: 4px;
@@ -152,8 +147,6 @@
 
     button {
       font-weight: 500;
-      color: $green;
-      border: 1px solid $green;
       border-radius: 4px;
 
       height: 3.5rem;

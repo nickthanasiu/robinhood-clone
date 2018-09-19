@@ -4,8 +4,6 @@ const Company = require('../../models/Company');
 exports.get_portfolio_value = (req, res, next) => {
   const { currentUserId } = req.body;
 
-  console.log('FIRING GET PORTFOLIO VALUE CONTROLLER!!!');
-
   if (!currentUserId) {
     res.status(422).send({ Error: 'The current user\'s id is required to look up their portfolio value' });
   }
@@ -27,10 +25,8 @@ exports.get_portfolio_value = (req, res, next) => {
         const { num_shares } = stock;
         const stockValue = num_shares * companyPrice;
         stockValues.push(stockValue);
-        console.log('StOCK VALUES: ', stockValues);
         done--;
         if (done === 0) {
-          console.log('STOCK VALUES ARRAY: ', stockValues);
           const portfolioValue = stockValues.reduce((a, b) => a + b, 0).toFixed(2);
           res.send(portfolioValue);
         }

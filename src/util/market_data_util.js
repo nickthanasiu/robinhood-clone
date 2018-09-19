@@ -13,3 +13,23 @@ exports.cacheShouldRefresh = (timestamp) => {
   diff /= 60;
   return Math.abs(Math.round(diff)) > 5;
 };
+
+// Takes a date and returns a formatted key to get value of that date's opening price
+// Example Return Value: 2018-09-18 09:30:00
+exports.formatOpenPriceKey = (timestamp) => {
+  const dateToString = (n) => {
+    return (n <= 9 ? '0' : '') + n;
+  };
+
+  const formatDate = (date) => {
+    const mm = dateToString(date.getMonth() + 1);
+    const dd = dateToString(date.getDate());
+    const yyyy = date.getFullYear().toString();
+
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  const date = formatDate(timestamp);
+
+  return `${date} 09:30:00`;
+};

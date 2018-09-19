@@ -49,8 +49,6 @@ exports.follow_company = (req, res, next) => {
     company_id: companyId,
   });
 
-  console.log('THIS IS THE STOCK ITEM WE CREATED: ', stock);
-
   stock.save();
 
   res.json(stock);

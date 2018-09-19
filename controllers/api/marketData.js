@@ -44,8 +44,10 @@ exports.latest_price = async (req, res, next) => {
     }
   });
 
+  // Convert cacheVal.value from String to Number
+  const latestPrice = parseFloat(cacheVal.value, 10).toFixed(2);
   // Send latest price to client
-  res.json(cacheVal.value.toFixed(2));
+  res.json(latestPrice);
 };
 
 exports.intraday_data = async (req, res) => {

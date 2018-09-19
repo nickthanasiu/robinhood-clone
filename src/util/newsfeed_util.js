@@ -16,11 +16,11 @@ exports.shuffleArray = (array) => {
 
 exports.getPastWeekDates = () => {
   const dateToString = (n) => {
-    return (n <= 9 ? '0' : '') + (n + 1);
+    return (n <= 9 ? '0' : '') + n;
   };
 
   const formatDate = (date) => {
-    const mm = dateToString(date.getMonth());
+    const mm = dateToString(date.getMonth() + 1);
     const dd = dateToString(date.getDate());
     const yyyy = date.getFullYear().toString();
 

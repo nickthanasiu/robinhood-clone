@@ -31,7 +31,6 @@ export const getPortfolioValue = currentUserId => async dispatch => {
     const value = response.data;
     dispatch(getPortfolioSuccess(value));
 
-    console.log('PORTFOLIO VALUE RESPONSE: ', response);
   } catch (err) {
     dispatch(getPortfolioError(err));
   }

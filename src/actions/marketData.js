@@ -61,7 +61,6 @@ export const getDaily = symbol => async (dispatch) => {
     const responseArray = Object.entries(response.data);
     const mostRecent = responseArray[0][1];
     const lastClose = Object.entries(mostRecent)[3][1];
-    console.log('GET DAILY DATA RESPONSE: ', lastClose);
 
   } catch (err) {
     console.log(err);
@@ -88,7 +87,6 @@ export const getLatestPrice = symbol => async (dispatch) => {
     dispatch(getLatestBegin());
 
     const response = await axios.post(`${API_URL}/latest_price`, { symbol });
-    console.log('ABOUT TO DISPATCH GETLATESTSUCCES WITH DATA: ', response.data);
     dispatch(getLatestSuccess(response.data));
 
   } catch (err) {

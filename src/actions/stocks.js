@@ -70,7 +70,6 @@ export const buyStock = (currentUserId, companyId, shares) => async dispatch => 
       dispatch(buyStockSuccess())
     }, 2000);
 
-    console.log('BUY STOCK ACTION RESPONSE: ', response);
   } catch (err) {
     dispatch(buyStockError(err));
   }
@@ -92,7 +91,6 @@ const sellStockError = error => ({
 export const sellStock = (currentUserId, companyId, shares) => async dispatch => {
   try {
     dispatch(sellStockBegin());
-    console.log('FIRING SELLSTOCK ACTION WITH USER_ID: ', currentUserId);
 
     const response = await axios.post(`${API_URL}/sell_stock`, {
       currentUserId,

@@ -7,7 +7,6 @@ const API_URL = 'http://localhost:3090';
 export const signup = (formProps, callback) => async dispatch => {
   try {
     const response = await axios.post(`${API_URL}/signup`, formProps);
-    console.log('RESPONSE DATA', response.data);
     dispatch({
       type: AUTH_USER,
       payload: response.data.token

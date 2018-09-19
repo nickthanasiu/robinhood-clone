@@ -40,23 +40,16 @@ class Chart extends Component {
     this.setChartData = this.setChartData.bind(this);
   }
 
-  componentWillMount() {
-    const { getIntraday, selectedCompany } = this.props;
-    getIntraday(selectedCompany.symbol);
-  }
-
-  componentWillReceiveProps(newProps) {
-    console.log(Object.keys(newProps.intradayData));
-  }
 
   setChartData(data) {
+    const borderColor = this.props.fillColor;
     const chartData = {
       labels: Object.keys(data).reverse(),
       datasets: [{
         label: 'My First dataset',
         fill: false,
         lineTension: 0.1,
-        borderColor: '#30cd9a',
+        borderColor: borderColor,
         borderWidth: 2,
         pointRadius: 0,
         data: Object.values(data).reverse(),

@@ -41,7 +41,6 @@ class Sidebar extends Component {
     }
 
     const filterResult = myStocks.filter(stock => this.isCompanyOwned(stock));
-    console.log('THIS IS filterResult: ', filterResult);
     // Loop through myStocks to check if selectedCompany is owned by user
     if (filterResult.length === 1) {
       this.setState({
@@ -50,11 +49,6 @@ class Sidebar extends Component {
       });
     }
   }
-
-  componentWillReceiveProps(nextProps) {
-    console.log('RECEIVING NEW PROPS: ', nextProps);
-  }
-
 
   isCompanyOwned(company) {
     const { selectedCompany } = this.props;
@@ -159,7 +153,7 @@ class Sidebar extends Component {
 
   renderBuyButton() {
     return (
-      <button type="button" onClick={this.handleBuyButtonClick}>
+      <button type="button" onClick={this.handleBuyButtonClick} style={{ backgroundColor: this.props.fillColor }}>
         Buy
       </button>
     );
@@ -167,7 +161,7 @@ class Sidebar extends Component {
 
   renderSellButton() {
     return (
-      <button type="button" onClick={this.handleSellButtonClick}>
+      <button type="button" onClick={this.handleSellButtonClick} style={{ backgroundColor: this.props.fillColor }}>
         Sell
       </button>
     );
@@ -175,8 +169,9 @@ class Sidebar extends Component {
 
   renderSubmitButton() {
     const { buyStockLoading } = this.props;
+
     return (
-      <button type="submit" onClick={this.handleSubmitButtonClick}>
+      <button type="submit" onClick={this.handleSubmitButtonClick} style={{ backgroundColor: this.props.fillColor }}>
         {
           buyStockLoading ? 'Submitting...' : 'Submit'
         }
@@ -192,7 +187,11 @@ class Sidebar extends Component {
       submitButtonDisplay
     } = this.state;
 
-    const { selectedCompany, latestPrice, loadingLatestPrice } = this.props;
+    const {
+      selectedCompany,
+      latestPrice,
+      loadingLatestPrice,
+    } = this.props;
 
     return (
       <div className="buy-form">
@@ -212,7 +211,7 @@ class Sidebar extends Component {
           </div>
 
           <div className="market-price order-form-elem">
-            <span>
+            <span style={{ color: this.props.fillColor }}>
               Market Price
             </span>
             <span>
@@ -261,7 +260,11 @@ class Sidebar extends Component {
       submitButtonDisplay
     } = this.state;
 
-    const { selectedCompany, latestPrice, loadingLatestPrice } = this.props;
+    const {
+      selectedCompany,
+      latestPrice,
+      loadingLatestPrice,
+    } = this.props;
 
     return (
       <div className="buy-form">
@@ -281,7 +284,7 @@ class Sidebar extends Component {
           </div>
 
           <div className="market-price order-form-elem">
-            <span>
+            <span style={{ color: this.props.fillColor }}>
               Market Price
             </span>
             <span>
@@ -340,6 +343,8 @@ class Sidebar extends Component {
       sellActive,
     } = this.state;
 
+    const buyTabStyle = buyActive ? {borderBottom: `2px solid ${this.props.fillColor}`} : {borderBottom: 'none' }
+    const sellTabStyle = sellActive ? {borderBottom: `2px solid ${this.props.fillColor}`} : {borderBottom: 'none' }
 
     return (
       <div className="sidebar">
@@ -347,8 +352,9 @@ class Sidebar extends Component {
         <div className="order-form">
           <div className="order-form-header">
             <div
-              className={`buy-header ${ buyActive ? 'header-active' : '' }`}
+              className={`buy-header ${ buyActive ? 'header-inactive' : '' }`}
               onClick={e => this.toggleActive(e)}
+              style={buyTabStyle}
             >
               Buy
               <span className="company-symbol">
@@ -359,8 +365,9 @@ class Sidebar extends Component {
               owned ?
                 (
                   <div
-                    className={`sell-header ${ sellActive ? 'header-active' : ''}`}
+                    className={`sell-header ${ !sellActive ? 'header-inactive' : ''}`}
                     onClick={e => this.toggleActive(e)}
+                    style={sellTabStyle}
                   >
                     Sell
                     <span className="company-symbol">
@@ -377,7 +384,14 @@ class Sidebar extends Component {
         </div>
 
         <div className="watch-button-container">
-          <button type="button" onClick={this.handleWatchButtonClick}>
+          <button
+            type="button"
+            onClick={this.handleWatchButtonClick}
+            style={{
+              color: this.props.fillColor,
+              border: `1px solid ${this.props.fillColor}`
+            }}
+          >
             {
               watching ? 'Remove from Watchlist' : 'Add to Watchlist'
             }
