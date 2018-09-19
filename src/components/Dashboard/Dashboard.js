@@ -10,13 +10,12 @@ import './style.scss';
 class Dashboard extends Component {
 
   componentDidMount() {
-    const { getFollowedCompanies, currentUserId } = this.props;
+    const { getFollowedCompanies, getPortfolioValue, currentUserId } = this.props;
     getFollowedCompanies(currentUserId);
+    getPortfolioValue(currentUserId);
   }
 
   componentWillReceiveProps(newProps) {
-    console.log('RECEIVING THESE ARTICLES', newProps.articles);
-    console.log('AND THESE FOLLOWEDCOMPANIES: ', newProps.followedCompanies);
     if (newProps.followedCompanies !== this.props.followedCompanies) {
       newProps.fetchFollowedArticles(newProps.followedCompanies);
     }
@@ -27,7 +26,8 @@ class Dashboard extends Component {
       followedCompanies,
       currentUserId,
       articles,
-      loadingArticles
+      loadingArticles,
+      portfolioValue
     } = this.props;
 
     return (
@@ -36,7 +36,9 @@ class Dashboard extends Component {
         <div className="column-left">
           <div className="dashboard-header">
             <h2 className="portfolio-value">
-              $4.17
+              {`
+                $${portfolioValue}
+              `}
             </h2>
             <span className="value-change">
               +$0.40 (1.18%)

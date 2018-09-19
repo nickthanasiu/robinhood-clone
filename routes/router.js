@@ -4,6 +4,7 @@ const CompaniesController = require('../controllers/api/companies');
 const NewsfeedController = require('../controllers/api/newsfeed');
 const MarketDataController = require('../controllers/api/marketData');
 const StocksController = require('../controllers/api/stocks');
+const PortfolioController = require('../controllers/api/portfolio');
 const passportService = require('../services/passport');
 
 const requireAuth = passport.authenticate('jwt', { session: false });
@@ -23,6 +24,7 @@ module.exports = (app) => {
   app.post('/api/buy_stock', StocksController.buy_stock);
   app.post('/api/sell_stock', StocksController.sell_stock);
   app.post('/api/get_stocks', StocksController.get_stocks);
+  app.post('/api/portfolio_value', PortfolioController.get_portfolio_value);
   app.post('/api/newsfeed', NewsfeedController.newsFeed);
   app.post('/api/newsfeed_followed', NewsfeedController.newsFeedFollowed);
   app.post('/api/latest_price', MarketDataController.latest_price);

@@ -5,6 +5,7 @@ import companies from './companies';
 import newsfeed from './newsfeed';
 import marketData from './marketData';
 import stocks from './stocks';
+import portfolio from './portfolio';
 
 export default combineReducers({
   auth,
@@ -12,5 +13,6 @@ export default combineReducers({
   newsfeed,
   marketData,
   stocks,
+  portfolio,
   form: formReducer,
 });

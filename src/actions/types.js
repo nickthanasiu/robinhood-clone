@@ -27,6 +27,10 @@ export const SELL_STOCK_BEGIN = 'sell_stock_begin';
 export const SELL_STOCK_SUCCESS = 'sell_stock_success';
 export const SELL_STOCK_ERROR = 'sell_stock_error';
 
+export const GET_PORTFOLIO_BEGIN = 'get_portfolio_begin';
+export const GET_PORTFOLIO_SUCCESS = 'get_portfolio_success';
+export const GET_PORTFOLIO_ERROR = 'get_portfolio_error';
+
 export const FETCH_ARTICLES_BEGIN = 'fetch_articles_begin';
 export const FETCH_ARTICLES_SUCCESS = 'fetch_articles_success';
 export const FETCH_ARTICLES_ERROR = 'fetch_articles_error';
