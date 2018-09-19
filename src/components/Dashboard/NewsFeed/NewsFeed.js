@@ -24,7 +24,12 @@ const NewsFeed = props => (
                       </div>
                       <div className="article-right">
                         <span className="article-source">
-                          { article.source.name }
+                          {`
+                            ${article.source.name} on
+                          `}
+                          <span className="article-company">
+                            { article.company }
+                          </span>
                         </span>
                         <span className="article-published">
                           <Moment fromNow>

@@ -67,11 +67,21 @@ exports.newsFeedFollowed = (req, res) => {
 
   makePromise(companyNames)
     .then((resp) => {
-      const articlesArray = resp.map((responseObj) => {
-        const { articles } = responseObj;
+      let i = 0;
+
+      const articlesArray = resp.map((r) => {
+        const { articles } = r;
         articles.splice(3);
+        console.log('COMPANY NAME: ', companyNames[i]);
+        console.log('ARTICLES: ', articles);
+        articles.forEach((article) => {
+          article.company = companyNames[i];
+          console.log('HERE IS AN ARTICLE: ', article);
+        });
+        i++;
         return articles;
       });
+
       const responseArray = articlesArray.reduce((prev, curr) => {
         return prev.concat(curr);
       });

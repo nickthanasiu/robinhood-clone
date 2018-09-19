@@ -56,6 +56,10 @@
 
         .article-source {
           font-weight: 500;
+
+          .article-company {
+            color: $green;
+          }
         }
 
         .article-published {
