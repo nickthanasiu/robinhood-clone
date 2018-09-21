@@ -25,6 +25,7 @@ module.exports = (app) => {
   app.post('/api/sell_stock', StocksController.sell_stock);
   app.post('/api/get_stocks', StocksController.get_stocks);
   app.post('/api/portfolio_value', PortfolioController.get_portfolio_value);
+  app.post('/api/portfolio_intraday', PortfolioController.portfolio_intraday);
   app.post('/api/newsfeed', NewsfeedController.newsFeed);
   app.post('/api/newsfeed_followed', NewsfeedController.newsFeedFollowed);
   app.post('/api/latest_price', MarketDataController.latest_price);

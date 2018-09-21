@@ -10,8 +10,14 @@ import './style.scss';
 class Dashboard extends Component {
 
   componentDidMount() {
-    const { getFollowedCompanies, getPortfolioValue, currentUserId } = this.props;
+    const {
+      getFollowedCompanies,
+      getMyStocks,
+      getPortfolioValue,
+      currentUserId
+    } = this.props;
     getFollowedCompanies(currentUserId);
+    getMyStocks(currentUserId);
     getPortfolioValue(currentUserId);
   }
 
@@ -19,11 +25,19 @@ class Dashboard extends Component {
     if (newProps.followedCompanies !== this.props.followedCompanies) {
       newProps.fetchFollowedArticles(newProps.followedCompanies);
     }
+
+    if (newProps.myStocks !== this.props.myStocks) {
+      const symbols = newProps.myStocks.map((stock) => {
+        return stock.symbol;
+      });
+      newProps.getPortfolioIntraday(symbols);
+    }
   }
 
   render() {
     const {
       followedCompanies,
+      myStocks,
       currentUserId,
       articles,
       loadingArticles,
@@ -64,6 +78,7 @@ class Dashboard extends Component {
           <div className="sidebar-container">
             <SideBar
               followedCompanies={followedCompanies}
+              myStocks={myStocks}
               currentUserId={currentUserId}
             />
           </div>

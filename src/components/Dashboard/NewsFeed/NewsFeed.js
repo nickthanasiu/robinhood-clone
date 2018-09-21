@@ -17,7 +17,12 @@ const NewsFeed = props => (
             {
               props.articles.map((article) => {
                 return (
-                  <a href={article.url} rel="noopener noreferrer" target="_blank">
+                  <a
+                    href={article.url}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    key={article.publishedAt}
+                  >
                     <li className="article">
                       <div className="article-left">
                         <img src={article.urlToImage} />

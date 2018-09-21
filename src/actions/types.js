@@ -31,6 +31,10 @@ export const GET_PORTFOLIO_BEGIN = 'get_portfolio_begin';
 export const GET_PORTFOLIO_SUCCESS = 'get_portfolio_success';
 export const GET_PORTFOLIO_ERROR = 'get_portfolio_error';
 
+export const GET_PORTFOLIO_INTRA_BEGIN = 'get_portfolio_intra_begin';
+export const GET_PORTFOLIO_INTRA_SUCCESS = 'get_portfolio_intra_success';
+export const GET_PORTFOLIO_INTRA_ERROR = 'get_portfolio_intra_error';
+
 export const FETCH_ARTICLES_BEGIN = 'fetch_articles_begin';
 export const FETCH_ARTICLES_SUCCESS = 'fetch_articles_success';
 export const FETCH_ARTICLES_ERROR = 'fetch_articles_error';

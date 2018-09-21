@@ -5,6 +5,9 @@ import {
   GET_PORTFOLIO_BEGIN,
   GET_PORTFOLIO_SUCCESS,
   GET_PORTFOLIO_ERROR,
+  GET_PORTFOLIO_INTRA_BEGIN,
+  GET_PORTFOLIO_INTRA_SUCCESS,
+  GET_PORTFOLIO_INTRA_ERROR,
 } from './types';
 
 const API_URL = 'http://localhost:3090/api';
@@ -33,5 +36,31 @@ export const getPortfolioValue = currentUserId => async dispatch => {
 
   } catch (err) {
     dispatch(getPortfolioError(err));
+  }
+};
+
+const getPortfolioIntraBegin = () => ({
+  type: GET_PORTFOLIO_INTRA_BEGIN
+});
+
+const getPortfolioIntraSuccess = data => ({
+  type: GET_PORTFOLIO_INTRA_SUCCESS,
+  payload: { data }
+});
+
+const getPortfolioIntraError = error => ({
+  type: GET_PORTFOLIO_INTRA_ERROR,
+  payload: { error }
+});
+
+export const getPortfolioIntraday = symbols => async dispatch => {
+  console.log('FIRING GETPORTFOLIOITRADAY ACTION WITH SYMBOLS: ', symbols);
+  try {
+    dispatch(getPortfolioIntraBegin());
+
+    const response = await axios.post(`${API_URL}/portfolio_intraday`, { symbols });
+    //dispatch(getPortfolioIntraSuccess(/**/));
+  } catch (err) {
+    dispatch(getPortfolioIntraError(err));
   }
 };

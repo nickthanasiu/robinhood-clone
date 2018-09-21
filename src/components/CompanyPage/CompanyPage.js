@@ -84,7 +84,7 @@ class CompanyPage extends Component {
 
             <span className="price-change">
               {`
-                ${operator}${dailyChange} (${dailyChangePercentage}%)
+                ${operator}$${Math.abs(dailyChange)} (${dailyChangePercentage}%)
               `}
               <span className="timespan">
                 Today

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Feather from '../Feather';
 import SearchBar from './SearchBar';
 
 import './style.scss';
@@ -46,7 +47,7 @@ export default (ChildComponent) => {
           <div className="header">
             <div className="header-left">
               <div className="brand">
-                Brand
+                <Feather />
               </div>
               <div className="search">
                 <SearchBar />
