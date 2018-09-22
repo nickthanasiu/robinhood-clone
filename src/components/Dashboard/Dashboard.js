@@ -3,11 +3,22 @@ import Header from '../Header';
 import Chart from './Chart';
 import SideBar from './Sidebar';
 import NewsFeed from './NewsFeed';
+import { formatOpenPriceKey } from '../../util/market_data_util';
 import requireAuth from '../requireAuth';
 
 import './style.scss';
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dailyChange: '',
+      dailyChangePercentage: '',
+      changePositive: true,
+      fillColor: '#30cd9a',
+    };
+    this.calculateDailyChange = this.calculateDailyChange.bind(this);
+  }
 
   componentDidMount() {
     const {
@@ -16,9 +27,11 @@ class Dashboard extends Component {
       getPortfolioValue,
       currentUserId
     } = this.props;
+
     getFollowedCompanies(currentUserId);
     getMyStocks(currentUserId);
     getPortfolioValue(currentUserId);
+    this.calculateDailyChange();
   }
 
   componentWillReceiveProps(newProps) {
@@ -30,8 +43,32 @@ class Dashboard extends Component {
       const symbols = newProps.myStocks.map((stock) => {
         return stock.symbol;
       });
-      newProps.getPortfolioIntraday(symbols);
+      newProps.getPortfolioIntraday(symbols)
+        .then(() => {
+          this.calculateDailyChange();
+        });
     }
+  }
+
+  calculateDailyChange() {
+    const { portfolioIntradayData } = this.props;
+    const today = new Date(Date.now());
+    const openPriceKey = formatOpenPriceKey(today);
+    const openPrice = portfolioIntradayData[openPriceKey];
+    const latestPrice = Object.values(portfolioIntradayData)[0];
+    console.log('OPEN PRICE: ', openPrice);
+    console.log('LATEST PRICE: ', latestPrice);
+    const dailyChange = (latestPrice - openPrice).toFixed(2);
+    const dailyChangePercentage = ((dailyChange / openPrice) * 100).toFixed(2);
+    const changePositive = dailyChange >= 0 ? true : false;
+    const fillColor = dailyChange >= 0 ? '#30cd9a' : '#f68f7c';
+
+    this.setState({
+      dailyChange,
+      dailyChangePercentage,
+      changePositive,
+      fillColor,
+    });
   }
 
   render() {
@@ -41,8 +78,30 @@ class Dashboard extends Component {
       currentUserId,
       articles,
       loadingArticles,
-      portfolioValue
+      portfolioValue,
+      loadingPortfolio,
+      portfolioIntradayData,
+      loadingPortfolioIntra
     } = this.props;
+
+    const {
+      dailyChange,
+      dailyChangePercentage,
+      changePositive,
+      fillColor,
+    } = this.state;
+
+    const operator = changePositive ? '+' : '-';
+
+    const dailyChangeSpan = `
+      ${operator}$${Math.abs(dailyChange)} (${dailyChangePercentage}%)
+    `;
+
+    const timespan = (
+      <span className="timespan">
+        Today
+      </span>
+    );
 
     return (
       <div className="dashboard">
@@ -50,20 +109,28 @@ class Dashboard extends Component {
         <div className="column-left">
           <div className="dashboard-header">
             <h2 className="portfolio-value">
-              {`
-                $${portfolioValue}
-              `}
+              {
+                loadingPortfolio ? null :
+                  `
+                    $${portfolioValue}
+                  `
+              }
             </h2>
             <span className="value-change">
-              +$0.40 (1.18%)
-              <span className="timespan">
-                Today
-              </span>
+              {
+                loadingPortfolioIntra ? null : dailyChangeSpan
+              }
+              {
+                loadingPortfolioIntra ? null : timespan
+              }
             </span>
           </div>
 
           <div className="chart-container">
-            <Chart />
+            <Chart
+              portfolioIntradayData={portfolioIntradayData}
+              fillColor={fillColor}
+            />
           </div>
 
           <div className="newsfeed-container">

@@ -59,7 +59,8 @@ export const getPortfolioIntraday = symbols => async dispatch => {
     dispatch(getPortfolioIntraBegin());
 
     const response = await axios.post(`${API_URL}/portfolio_intraday`, { symbols });
-    //dispatch(getPortfolioIntraSuccess(/**/));
+    dispatch(getPortfolioIntraSuccess(response.data));
+    
   } catch (err) {
     dispatch(getPortfolioIntraError(err));
   }

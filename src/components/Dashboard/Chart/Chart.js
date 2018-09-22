@@ -38,15 +38,36 @@ class Chart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timeSeries: 'Past Week',
+      timeSeries: 'Today',
     };
+
+    this.setChartData = this.setChartData.bind(this);
+  }
+
+  setChartData(data) {
+    const borderColor = this.props.fillColor;
+    const chartData = {
+      labels: Object.keys(data).reverse(),
+      datasets: [{
+        label: 'My First dataset',
+        fill: false,
+        lineTension: 0.1,
+        borderColor: borderColor,
+        borderWidth: 2,
+        pointRadius: 0,
+        data: Object.values(data).reverse(),
+      }]
+    }
+
+    return chartData;
   }
 
   render() {
+    const { portfolioIntradayData } = this.props;
     return (
       <div className="chart">
         <div className="chart-wrapper">
-          <Line height={75} data={chartData} options={chartOptions} />
+          <Line height={75} data={this.setChartData(portfolioIntradayData)} options={chartOptions} />
         </div>
       </div>
     );

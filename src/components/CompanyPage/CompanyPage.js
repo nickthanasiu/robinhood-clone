@@ -22,8 +22,12 @@ class CompanyPage extends Component {
   }
 
   componentDidMount() {
-    const { getLatestPrice, selectedCompany } = this.props;
+    const { getLatestPrice, getIntraday, selectedCompany } = this.props;
     getLatestPrice(selectedCompany.symbol);
+    getIntraday(selectedCompany.symbol)
+      .then(() => {
+        this.calculateDailyChange();
+      });
   }
 
   componentWillReceiveProps(newProps) {
@@ -60,6 +64,7 @@ class CompanyPage extends Component {
       latestPrice,
       loadingLatestPrice,
       intradayData,
+      loadingIntraday,
     } = this.props;
 
     const {
@@ -70,6 +75,19 @@ class CompanyPage extends Component {
     } = this.state;
 
     const operator = changePositive ? '+' : '-';
+
+    const dailyChangeSpan = `
+      ${operator}$${Math.abs(dailyChange)} (${dailyChangePercentage}%)
+    `;
+
+    const timespan = (
+      <span className="timespan">
+        Today
+      </span>
+    );
+
+    const renderConditions = loadingLatestPrice || loadingIntraday;
+
     return (
       <div className="company-page">
         <div className="column-left">
@@ -78,26 +96,31 @@ class CompanyPage extends Component {
               { selectedCompany.name }
             </h2>
             <h2 className="company-price">
-              $
-              { loadingLatestPrice ? selectedCompany.price : latestPrice }
+              {
+                loadingLatestPrice ? null : `$${latestPrice}`
+              }
             </h2>
 
             <span className="price-change">
-              {`
-                ${operator}$${Math.abs(dailyChange)} (${dailyChangePercentage}%)
-              `}
-              <span className="timespan">
-                Today
-              </span>
+              {
+                loadingIntraday ? null : dailyChangeSpan
+              }
+              {
+                loadingIntraday ? null : timespan
+              }
             </span>
           </div>
 
           <div className="chart-container">
-            <Chart
-              selectedCompany={selectedCompany}
-              fillColor={fillColor}
-              intradayData={intradayData}
-            />
+            {
+              loadingIntraday ? null : (
+                <Chart
+                  selectedCompany={selectedCompany}
+                  fillColor={fillColor}
+                  intradayData={intradayData}
+                />
+              )
+            }
           </div>
 
           <div className="company-about">
@@ -197,14 +220,18 @@ class CompanyPage extends Component {
         </div>
 
         <div className="column-right">
-          <div className="sidebar-container">
-            <SidebarContainer
-              selectedCompany={selectedCompany}
-              latestPrice={latestPrice}
-              loadingLatestPrice={loadingLatestPrice}
-              fillColor={fillColor}
-            />
-          </div>
+          {
+            loadingIntraday ? null : (
+              <div className="sidebar-container">
+                <SidebarContainer
+                  selectedCompany={selectedCompany}
+                  latestPrice={latestPrice}
+                  loadingLatestPrice={loadingLatestPrice}
+                  fillColor={fillColor}
+                />
+              </div>
+            )
+          }
         </div>
       </div>
     );

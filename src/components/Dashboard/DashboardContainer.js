@@ -12,6 +12,9 @@ const mapStateToProps = state => ({
   articles: state.newsfeed.articles,
   loadingArticles: state.newsfeed.loadingArticles,
   portfolioValue: state.portfolio.portfolioValue,
+  loadingPortfolio: state.portfolio.timespan,
+  portfolioIntradayData: state.portfolio.portfolioIntradayData,
+  loadingPortfolioIntra: state.portfolio.loadingPortfolioIntra,
 });
 
 const mapDispatchToProps = dispatch => ({

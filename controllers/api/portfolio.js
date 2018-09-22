@@ -46,7 +46,7 @@ exports.portfolio_intraday = async (req, res) => {
     const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${API_KEY}`);
     const metaData = Object.values(response.data)[0];
     const timeData = Object.values(response.data)[1];
-
+    console.log('TIME DATA: ', timeData);
     const timePoints = Object.keys(timeData);
     const pricePoints = Object.values(timeData);
     // Map timePoints to prices using the 'close' value for each 5 minute interval
@@ -73,9 +73,24 @@ exports.portfolio_intraday = async (req, res) => {
     .then((values) => {
       const timeKeys = Object.keys(values[0]);
       const sumObject = {};
+      console.log('FIRST VALUES OBJ: ', values[0]);
+      console.log('SECOND VALUES OBJ: ', values[1]);
 
-      for (let i; i < timeKeys.length; i++) {
-        console.log('ANOTHER KEY: ', timeKeys[i]);
+      for (let i = 0; i < timeKeys.length; i++) {
+        const timeKey = timeKeys[i];
+
+        for (let j = 0; j < values.length; j++) {
+          const number = parseFloat(values[j][timeKey]);
+          if (!sumObject[timeKey]) {
+            sumObject[timeKey] = number;
+          } else {
+            const existingValue = sumObject[timeKey];
+            sumObject[timeKey] = existingValue + number;
+          }
+        }
       }
-    });
+
+      res.json(sumObject);
+    })
+    .catch();
 };
