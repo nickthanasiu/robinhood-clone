@@ -2,7 +2,6 @@ const Company = require('../../models/Company');
 const FollowedStock = require('../../models/FollowedStock');
 
 exports.search_companies = (req, res, next) => {
-  console.log(req.body);
   const { symbol, name } = req.body;
 
   // Make sure a Company's Symbol or Name was passed

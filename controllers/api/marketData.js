@@ -17,12 +17,9 @@ exports.latest_price = async (req, res, next) => {
   const apiGet = async () => {
     const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${API_KEY}`);
     const metaData = Object.values(response.data)[0];
-    console.log('META DATA: ', metaData);
     const timeData = Object.values(response.data)[1];
     const lastRefresh = Object.values(metaData)[2];
-    console.log('LAST REFRESH: ', lastRefresh);
     const lastData = Object.values(timeData[lastRefresh]);
-    console.log('LAST DATA: ', lastData);
     const lastClose = lastData[3];
 
     return {
@@ -80,7 +77,7 @@ exports.intraday_data = async (req, res) => {
     for (let i = 0; i < timePoints.length; i++) {
       responseObj[timePoints[i]] = closePoints[i];
     }
-    
+
     res.json(responseObj);
   } catch (err) {
     res.json(err);
@@ -91,6 +88,5 @@ exports.daily_data = async (req, res) => {
   const { query } = req.body;
   const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_DAILY&symbol=${query}&apikey=${API_KEY}`);
   const responseData = Object.values(response.data)[1];
-  console.log(responseData);
   res.json(responseData);
 };

@@ -18,21 +18,17 @@ exports.get_portfolio_value = (req, res, next) => {
       return next(err);
     }
 
-    console.log('STOCKS RETURNS: ', stocks);
-
     const stockValues = [];
     let done = stocks.length;
 
     // For each stock, look up the current price for the company,
     // then multiply by number of shares owned by user
     stocks.forEach((stock) => {
-      console.log('STOCK: ', stock);
       Company.find({ _id: stock.company_id }, (error, company) => {
         if (error) {
           return next(err);
         }
 
-        console.log('COMPANY RETURNS: ', company);
         const companyPrice = company[0].price.toFixed(2);
         const { num_shares } = stock;
         const stockValue = num_shares * companyPrice;
@@ -53,10 +49,8 @@ exports.portfolio_intraday = async (req, res) => {
   const apiGet = async (symbol) => {
     try {
       const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${API_KEY}`);
-      console.log('RESPONSE: ', response.data);
       const metaData = Object.values(response.data)[0];
       const timeData = Object.values(response.data)[1];
-      console.log('TIME DATA: ', timeData);
       const timePoints = Object.keys(timeData);
       const pricePoints = Object.values(timeData);
 
@@ -74,7 +68,7 @@ exports.portfolio_intraday = async (req, res) => {
 
       return responseObj;
     } catch (err) {
-      console.log('API GET ERROR: ', err);
+      return err;
     }
   };
 
@@ -82,8 +76,6 @@ exports.portfolio_intraday = async (req, res) => {
   const promises = symbols.map((symbol) => {
     return apiGet(symbol);
   });
-
-  console.log('PROMISES: ', promises);
 
   Promise.all(promises)
     .then((values) => {

@@ -82,7 +82,8 @@ class Dashboard extends Component {
       portfolioValue,
       loadingPortfolio,
       portfolioIntradayData,
-      loadingPortfolioIntra
+      loadingPortfolioIntra,
+      intradayData
     } = this.props;
 
     const {
@@ -150,6 +151,8 @@ class Dashboard extends Component {
               followedCompanies={followedCompanies}
               myStocks={myStocks}
               currentUserId={currentUserId}
+              intradayData={intradayData}
+              fillColor={fillColor}
             />
           </div>
         </div>

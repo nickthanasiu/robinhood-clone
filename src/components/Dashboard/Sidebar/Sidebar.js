@@ -1,24 +1,32 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import MiniChart from './MiniChart';
 
 import './style.scss';
 
-
-// @TODO: Make Watchlist and Stock items clickable links to the relevant company
 // @TODO: Make Add mini chart to each Watchlist and Stock item
 
 class Sidebar extends Component {
   constructor(props) {
     super(props);
 
-    this.handleClick = this.handleClick.bind(this);
+    this.handleStockClick = this.handleStockClick.bind(this);
+    this.handleWatchlistClick = this.handleWatchlistClick.bind(this);
     this.redirect = this.redirect.bind(this);
   }
 
-  handleClick(e) {
+  handleStockClick(e) {
     e.preventDefault();
     const returnNode = e.currentTarget.childNodes;
     const companySymbol = returnNode[0].firstChild.textContent;
+
+    this.redirect(companySymbol);
+  }
+
+  handleWatchlistClick(e) {
+    e.preventDefault();
+    const returnNode = e.currentTarget.childNodes;
+    const companySymbol = returnNode[0].textContent;
 
     this.redirect(companySymbol);
   }
@@ -30,6 +38,7 @@ class Sidebar extends Component {
   }
 
   render() {
+    const { intradayData } = this.props;
     return (
       <div className="sidebar-container">
 
@@ -57,10 +66,19 @@ class Sidebar extends Component {
                       }
                     </span>
                   </div>
-                  <span className="company-price">
-                    $
-                    { stock.value }
-                  </span>
+
+                  <div className="mini-chart-container">
+                    <MiniChart
+                      intradayData={intradayData}
+                    />
+                  </div>
+
+                  <div className="list-item-right">
+                    <span className="company-price">
+                      $
+                      { stock.value }
+                    </span>
+                  </div>
                 </li>
               ))
             }
@@ -74,6 +92,7 @@ class Sidebar extends Component {
                 <li
                   className="watchlist-item"
                   key={company.symbol}
+                  onClick={this.handleWatchlistClick}
                 >
                   <span className="company-symbol">
                     { company.symbol }
