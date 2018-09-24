@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+
 import App from '@components/App';
 import Welcome from '@components/Welcome';
 import Dashboard from '@components/Dashboard';
@@ -12,12 +13,23 @@ import SigninPage from '@components/SigninPage';
 import SignoutPage from '@components/SignoutPage';
 import AccountPage from '@components/AccountPage';
 import CompanyPage from '@components/CompanyPage';
-import { loadState, saveState } from './localStorage';
 
-import rootReducer from './reducers';
+import { loadState, saveState } from './localStorage';
+import appReducer from './reducers';
+import { SIGN_OUT } from './actions/types';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/main.scss';
+
+const rootReducer = (state, action) => {
+  // 'Clear' state when user signs out to secure user data
+  // state will still exist in localStorage but all values will be undefined
+  if (action.type === SIGN_OUT) {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
 
 const persistedState = loadState();
 const store = createStore(

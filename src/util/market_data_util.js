@@ -57,8 +57,11 @@ exports.formatOpenPriceKey = (timestamp) => {
     return `${yyyy}-${mm}-${dd}`;
   };
 
+
   const friday = getFriday();
-  const date = isWeekend ? formatDate(friday) : formatDate(timestamp);
+  const checkWeekend = isWeekend();
+
+  const date = checkWeekend ? formatDate(friday) : formatDate(timestamp);
 
   return `${date} 09:30:00`;
 };

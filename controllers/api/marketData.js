@@ -1,6 +1,6 @@
 const axios = require('axios');
 const Company = require('../../models/Company');
-const { cacheShouldRefresh } = require('../../src/util/market_data_util');
+const { cacheShouldRefresh, formatOpenPriceKey } = require('../../src/util/market_data_util');
 
 
 const API_KEY = 'KMUV9GNYBNT67P4R';
@@ -55,6 +55,7 @@ exports.latest_price = async (req, res, next) => {
 
 exports.intraday_data = async (req, res) => {
   const { symbol } = req.body;
+  const now = new Date(Date.now());
 
   //const cache = new Map();
 
@@ -79,10 +80,9 @@ exports.intraday_data = async (req, res) => {
     for (let i = 0; i < timePoints.length; i++) {
       responseObj[timePoints[i]] = closePoints[i];
     }
-
+    
     res.json(responseObj);
   } catch (err) {
-    console.log('INTRADAY DATA ERROR: ', err);
     res.json(err);
   }
 };

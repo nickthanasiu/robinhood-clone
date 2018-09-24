@@ -65,10 +65,17 @@
       }
 
       .result-wrapper {
-        display: flex;
-        justify-content: space-between;
-
         width: 50%;
+        display: flex;
+
+
+        .result-symbol {
+          width: 100%;
+        }
+
+        .result-name {
+          width: 100%;
+        }
       }
 
 

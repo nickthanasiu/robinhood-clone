@@ -63,7 +63,7 @@ class SearchBar extends Component {
   }
 
   render() {
-    const { queryResults } = this.state;
+    const { queryResults, query } = this.state;
     return (
       <div className="search-container">
         <div className="search-wrapper">
@@ -79,7 +79,7 @@ class SearchBar extends Component {
         </div>
         <ul className="query-results">
           {
-            queryResults.length === 0 ? null :
+            query === '' ? null :
               queryResults.map(result => (
                 <li
                   className="query-results-item"
@@ -88,12 +88,12 @@ class SearchBar extends Component {
                   onClick={this.handleClick}
                 >
                   <div className="result-wrapper">
-                    <span className="result-symbol">
+                    <div className="result-symbol">
                       { result.symbol }
-                    </span>
-                    <span className="result-name">
+                    </div>
+                    <div className="result-name">
                       { result.name }
-                    </span>
+                    </div>
                   </div>
                 </li>
               ))

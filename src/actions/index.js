@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import axios from 'axios';
-import { AUTH_USER, AUTH_ERROR, CURRENT_USER } from './types';
+import { AUTH_USER, AUTH_ERROR, CURRENT_USER, SIGN_OUT } from './types';
 
 const API_URL = 'http://localhost:3090';
 
@@ -47,14 +47,12 @@ export const signin = (formProps, callback) => async dispatch => {
   }
 };
 
-// @TODO: Add action to reset authentication errorMessage on signout
 
 export const signout = () => {
+  // Remove auth token from localStorage when user signs out
   localStorage.removeItem('token');
-  localStorage.removeItem('currentUserId');
-
+  
   return {
-    type: AUTH_USER,
-    payload: ''
+    type: SIGN_OUT
   };
 };

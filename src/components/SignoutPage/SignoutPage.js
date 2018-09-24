@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as actions from '../../actions';
 
 class Signout extends Component {
   componentDidMount() {
@@ -20,7 +17,4 @@ class Signout extends Component {
   }
 }
 
-export default compose(
-  connect(null, actions),
-  withRouter
-)(Signout);
+export default withRouter(Signout);

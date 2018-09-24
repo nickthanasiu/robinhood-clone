@@ -54,13 +54,12 @@ const getPortfolioIntraError = error => ({
 });
 
 export const getPortfolioIntraday = symbols => async dispatch => {
-  console.log('FIRING GETPORTFOLIOITRADAY ACTION WITH SYMBOLS: ', symbols);
   try {
     dispatch(getPortfolioIntraBegin());
 
     const response = await axios.post(`${API_URL}/portfolio_intraday`, { symbols });
     dispatch(getPortfolioIntraSuccess(response.data));
-    
+
   } catch (err) {
     dispatch(getPortfolioIntraError(err));
   }

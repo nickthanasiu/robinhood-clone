@@ -1,5 +1,6 @@
 export const AUTH_USER = 'auth_user';
 export const AUTH_ERROR = 'auth_error';
+export const SIGN_OUT = 'sign_out';
 
 export const CURRENT_USER = 'get_current_user';
 
