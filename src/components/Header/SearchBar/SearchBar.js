@@ -1,9 +1,6 @@
 /*eslint-disable*/
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
-import * as actions from '../../../actions/companies';
 
 import './style.scss';
 
@@ -107,13 +104,4 @@ class SearchBar extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    companies: state.companies.allCompanies,
-  };
-};
-
-export default compose(
-  connect(mapStateToProps, actions),
-  withRouter
-)(SearchBar);
+export default withRouter(SearchBar);
