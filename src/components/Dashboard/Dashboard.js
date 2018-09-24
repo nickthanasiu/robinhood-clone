@@ -158,4 +158,4 @@ class Dashboard extends Component {
 
 const DashWithHeader = Header(Dashboard);
 
-export default DashWithHeader;
+export default requireAuth(DashWithHeader);
