@@ -73,6 +73,8 @@ class Dashboard extends Component {
   render() {
     const {
       followedCompanies,
+      selectedCompany,
+      searchCompanies,
       myStocks,
       currentUserId,
       articles,
@@ -143,6 +145,8 @@ class Dashboard extends Component {
         <div className="column-right">
           <div className="sidebar-container">
             <SideBar
+              searchCompanies={searchCompanies}
+              selectedCompany={selectedCompany}
               followedCompanies={followedCompanies}
               myStocks={myStocks}
               currentUserId={currentUserId}

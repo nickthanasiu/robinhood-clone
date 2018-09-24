@@ -25,7 +25,7 @@ export const searchCompanies = (query, callback) => async dispatch => {
       name: query,
       symbol: query
     });
-    console.log('RESPONSE: ', response.data[0]);
+    
     dispatch({
       type: COMPANY_SEARCH_SUCCESS,
       payload: response.data[0]
