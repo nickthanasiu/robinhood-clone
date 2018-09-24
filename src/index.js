@@ -12,25 +12,26 @@ import SigninPage from '@components/SigninPage';
 import SignoutPage from '@components/SignoutPage';
 import AccountPage from '@components/AccountPage';
 import CompanyPage from '@components/CompanyPage';
+import { loadState, saveState } from './localStorage';
 
 import rootReducer from './reducers';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/main.scss';
 
+const persistedState = loadState();
 const store = createStore(
   rootReducer,
-  {
-    auth: {
-      authenticated: localStorage.getItem('token'),
-      errorMessage: ''
-    }
-  },
+  persistedState,
   compose(
     applyMiddleware(thunk),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   )
 );
+
+store.subscribe(() => {
+  saveState(store.getState());
+});
 
 ReactDOM.render(
   <Provider store={store}>

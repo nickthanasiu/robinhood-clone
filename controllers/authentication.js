@@ -1,6 +1,7 @@
 const jwt = require('jwt-simple');
 const { secret } = require('../config/config');
 const User = require('../models/User');
+const Stock = require('../models/Stock');
 
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
@@ -50,6 +51,27 @@ exports.signup = (req, res, next) => {
       lastName,
       email,
       password
+    });
+
+    // Upon signing up, the new user will have one share of Facebook stock
+    // Create stock
+    // @TODO: Facebook will get a new company_id every time the DB is seeded with
+    //        new company data
+    //        This should be addressed, probably by searching DB for FB's _id
+    // @TODO: Perhaps replace Facebook with a different company
+    const facebookStock = new Stock({
+      user_id: user._id,
+      company_id: '5ba70f4f12c65d0ec4f76d03',
+      num_shares: 1
+    });
+
+    console.log();
+
+    // Save Facebook Stock
+    facebookStock.save((error) => {
+      if (error) {
+        return next(err);
+      }
     });
 
     // Save user

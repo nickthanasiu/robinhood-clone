@@ -17,6 +17,7 @@ class SearchBar extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.queryResults = this.queryResults.bind(this);
   }
 
   componentDidMount() {
@@ -39,7 +40,6 @@ class SearchBar extends Component {
 
   handleClick(e) {
     e.preventDefault();
-    console.log('CLICKING RESULTS IN: ', e.currentTarget.getAttribute('value'));
     const query = e.currentTarget.getAttribute('value');
     const { searchCompanies, history } = this.props;
     searchCompanies(query, () => {
@@ -47,13 +47,20 @@ class SearchBar extends Component {
     });
   }
 
-  handleInputChange() {
-    const { companies } = this.props;
-    const { query, queryResults } = this.state;
+  handleInputChange(e) {
+    const { query } = this.state;
     this.setState({
-      query: this.search.value,
+      query: e.target.value,
+    }, () => {
+      this.queryResults();
+    });
+  }
+
+  queryResults() {
+    const { companies } = this.props;
+    this.setState({
       queryResults: companies.filter((company) => {
-        return company.name.includes(query);
+        return company.name.includes(this.state.query);
       })
     });
   }

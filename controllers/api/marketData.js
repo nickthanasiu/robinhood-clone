@@ -58,27 +58,33 @@ exports.intraday_data = async (req, res) => {
 
   //const cache = new Map();
 
-  const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${API_KEY}`);
-  const metaData = Object.values(response.data)[0];
-  const timeData = Object.values(response.data)[1];
-  const lastRefresh = Object.values(metaData)[2];
+  try {
+    const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${API_KEY}`);
 
-  const timePoints = Object.keys(timeData);
-  const pricePoints = Object.values(timeData);
-  // Map timePoints to prices using the 'close' value for each 5 minute interval
-  const responseObj = {};
+    const metaData = Object.values(response.data)[0];
+    const timeData = Object.values(response.data)[1];
 
-  const closePoints = [];
-  for (let i = 0; i < pricePoints.length; i++) {
-    closePoints.push(pricePoints[i]['4. close']);
+    const lastRefresh = Object.values(metaData)[2];
+
+    const timePoints = Object.keys(timeData);
+    const pricePoints = Object.values(timeData);
+    // Map timePoints to prices using the 'close' value for each 5 minute interval
+    const responseObj = {};
+
+    const closePoints = [];
+    for (let i = 0; i < pricePoints.length; i++) {
+      closePoints.push(pricePoints[i]['4. close']);
+    }
+
+    for (let i = 0; i < timePoints.length; i++) {
+      responseObj[timePoints[i]] = closePoints[i];
+    }
+
+    res.json(responseObj);
+  } catch (err) {
+    console.log('INTRADAY DATA ERROR: ', err);
+    res.json(err);
   }
-
-  for (let i = 0; i < timePoints.length; i++) {
-    responseObj[timePoints[i]] = closePoints[i];
-  }
-
-  // console.log("INTRADAY_DATA RESPONSE: ", responseObj);
-  res.json(responseObj);
 };
 
 exports.daily_data = async (req, res) => {

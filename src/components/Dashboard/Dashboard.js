@@ -25,7 +25,8 @@ class Dashboard extends Component {
       getFollowedCompanies,
       getMyStocks,
       getPortfolioValue,
-      currentUserId
+      currentUserId,
+      portfolioValue,
     } = this.props;
 
     getFollowedCompanies(currentUserId);
@@ -56,8 +57,6 @@ class Dashboard extends Component {
     const openPriceKey = formatOpenPriceKey(today);
     const openPrice = portfolioIntradayData[openPriceKey];
     const latestPrice = Object.values(portfolioIntradayData)[0];
-    console.log('OPEN PRICE: ', openPrice);
-    console.log('LATEST PRICE: ', latestPrice);
     const dailyChange = (latestPrice - openPrice).toFixed(2);
     const dailyChangePercentage = ((dailyChange / openPrice) * 100).toFixed(2);
     const changePositive = dailyChange >= 0 ? true : false;

@@ -16,7 +16,35 @@ exports.cacheShouldRefresh = (timestamp) => {
 
 // Takes a date and returns a formatted key to get value of that date's opening price
 // Example Return Value: 2018-09-18 09:30:00
+// On weekends, returns the the last Friday's date...lest we try accessing data that doesn't exist
+// (i.e., ...there will be no market data on weekends)
 exports.formatOpenPriceKey = (timestamp) => {
+  const now = new Date(Date.now());
+
+  const getFriday = () => {
+    if (now.getDay() === 6) {
+      const friday = new Date();
+      friday.setDate(now.getDate() - 1);
+
+      return friday;
+    }
+
+    if (now.getDay() === 0) {
+      const friday = new Date();
+      friday.setDate(now.getDate() - 2);
+
+      return friday;
+    }
+  };
+
+  const isWeekend = () => {
+    if (now.getDay() === 6 || now.getDay() === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const dateToString = (n) => {
     return (n <= 9 ? '0' : '') + n;
   };
@@ -29,7 +57,8 @@ exports.formatOpenPriceKey = (timestamp) => {
     return `${yyyy}-${mm}-${dd}`;
   };
 
-  const date = formatDate(timestamp);
+  const friday = getFriday();
+  const date = isWeekend ? formatDate(friday) : formatDate(timestamp);
 
   return `${date} 09:30:00`;
 };

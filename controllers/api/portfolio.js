@@ -18,13 +18,21 @@ exports.get_portfolio_value = (req, res, next) => {
       return next(err);
     }
 
+    console.log('STOCKS RETURNS: ', stocks);
+
     const stockValues = [];
     let done = stocks.length;
 
     // For each stock, look up the current price for the company,
     // then multiply by number of shares owned by user
     stocks.forEach((stock) => {
-      Company.find({ _id: stock.company_id }, (err, company) => {
+      console.log('STOCK: ', stock);
+      Company.find({ _id: stock.company_id }, (error, company) => {
+        if (error) {
+          return next(err);
+        }
+
+        console.log('COMPANY RETURNS: ', company);
         const companyPrice = company[0].price.toFixed(2);
         const { num_shares } = stock;
         const stockValue = num_shares * companyPrice;
@@ -43,25 +51,31 @@ exports.portfolio_intraday = async (req, res) => {
   const { symbols } = req.body;
 
   const apiGet = async (symbol) => {
-    const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${API_KEY}`);
-    const metaData = Object.values(response.data)[0];
-    const timeData = Object.values(response.data)[1];
-    console.log('TIME DATA: ', timeData);
-    const timePoints = Object.keys(timeData);
-    const pricePoints = Object.values(timeData);
-    // Map timePoints to prices using the 'close' value for each 5 minute interval
-    const responseObj = {};
+    try {
+      const response = await axios.get(`${API_URL}/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=${API_KEY}`);
+      console.log('RESPONSE: ', response.data);
+      const metaData = Object.values(response.data)[0];
+      const timeData = Object.values(response.data)[1];
+      console.log('TIME DATA: ', timeData);
+      const timePoints = Object.keys(timeData);
+      const pricePoints = Object.values(timeData);
 
-    const closePoints = [];
-    for (let i = 0; i < pricePoints.length; i++) {
-      closePoints.push(pricePoints[i]['4. close']);
+      // Map timePoints to prices using the 'close' value for each 5 minute interval
+      const responseObj = {};
+
+      const closePoints = [];
+      for (let i = 0; i < pricePoints.length; i++) {
+        closePoints.push(pricePoints[i]['4. close']);
+      }
+
+      for (let i = 0; i < timePoints.length; i++) {
+        responseObj[timePoints[i]] = closePoints[i];
+      }
+
+      return responseObj;
+    } catch (err) {
+      console.log('API GET ERROR: ', err);
     }
-
-    for (let i = 0; i < timePoints.length; i++) {
-      responseObj[timePoints[i]] = closePoints[i];
-    }
-
-    return responseObj;
   };
 
 
@@ -69,12 +83,12 @@ exports.portfolio_intraday = async (req, res) => {
     return apiGet(symbol);
   });
 
+  console.log('PROMISES: ', promises);
+
   Promise.all(promises)
     .then((values) => {
       const timeKeys = Object.keys(values[0]);
       const sumObject = {};
-      console.log('FIRST VALUES OBJ: ', values[0]);
-      console.log('SECOND VALUES OBJ: ', values[1]);
 
       for (let i = 0; i < timeKeys.length; i++) {
         const timeKey = timeKeys[i];
@@ -92,5 +106,7 @@ exports.portfolio_intraday = async (req, res) => {
 
       res.json(sumObject);
     })
-    .catch();
+    .catch((reason) => {
+      console.log('PROMISE FAILED BECAUSE: ', reason);
+    });
 };
